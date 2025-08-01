@@ -1,0 +1,192 @@
+'use client'
+import { postNewAsset } from '@/http/api'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as Icons from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
+import { z } from 'zod'
+import { Button } from '../../../components/button'
+import { InputField, InputIcon, InputRoot } from '../../../components/input'
+
+const assetSchema = z.object({
+  serialNumber: z.string().min(2, 'Insert Serial Number'),
+  name: z.string().min(2, 'Insert Asset Name'),
+  type: z.string().min(2, 'Insert Asset Type'),
+  assignedTo: z.preprocess(
+    value => (value === '' ? null : value),
+    z.string().email('Insert Employee Email').nullable()
+  ),
+  datePurchased: z.string().date('Valid Date: yyyy-mm-dd'),
+  assetNumber: z.string().min(2, 'Insert Asset Number'),
+})
+
+type assetSchema = z.infer<typeof assetSchema>
+
+export interface AssetModuleProps {
+  userEmail: string
+}
+
+export function AssetModule({ userEmail }: AssetModuleProps) {
+  const router = useRouter()
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<assetSchema>({
+    resolver: zodResolver(assetSchema),
+  })
+
+  async function assetRegister({
+    serialNumber,
+    name,
+    type,
+    assignedTo,
+    datePurchased,
+    assetNumber,
+  }: assetSchema) {
+    const normalizedData = {
+      serialNumber: serialNumber.toUpperCase(),
+      name: name.toLocaleUpperCase(),
+      type: type.toUpperCase(),
+      assignedTo: assignedTo?.toLowerCase() || null,
+      datePurchased,
+      assetNumber: assetNumber.toUpperCase(),
+      createdBy: userEmail,
+    }
+
+    const { success, message, staff } = await postNewAsset(normalizedData)
+    toast[success ? 'success' : 'error'](message)
+    if (staff) {
+      toast.info(`Staff: ${staff}`)
+    }
+    await router.push('/registration')
+    reset()
+  }
+
+  return (
+    <div className="max-w-md w-full max-h-fit bg-gray-800 p-6 rounded-xl">
+      <h1 className="text-2xl font-bold mb-4">Asset</h1>
+      <form
+        onSubmit={handleSubmit(assetRegister)}
+        className="flex flex-col gap-4"
+      >
+        {/* Serial Number */}
+        <div className="space-y-2">
+          <InputRoot data-error={!!errors.serialNumber}>
+            <InputIcon>
+              <Icons.Barcode />
+            </InputIcon>
+            <InputField
+              type="text"
+              placeholder="Serial Number"
+              {...register('serialNumber')}
+            />
+          </InputRoot>
+          {errors.serialNumber && (
+            <p className="ml-4 text-red text-xs font-semibold">
+              {errors.serialNumber.message}
+            </p>
+          )}
+        </div>
+
+        {/* Name */}
+        <div className="space-y-2">
+          <InputRoot data-error={!!errors.name}>
+            <InputIcon>
+              <Icons.ClipboardPen />
+            </InputIcon>
+            <InputField
+              type="text"
+              placeholder="Asset Name"
+              {...register('name')}
+            />
+          </InputRoot>
+          {errors.name && (
+            <p className="ml-4 text-red text-xs font-semibold">
+              {errors.name.message}
+            </p>
+          )}
+        </div>
+
+        {/* Type */}
+        <div className="space-y-2">
+          <InputRoot data-error={!!errors.type}>
+            <InputIcon>
+              <Icons.Laptop />
+            </InputIcon>
+            <InputField type="text" placeholder="Type" {...register('type')} />
+          </InputRoot>
+          {errors.type && (
+            <p className="ml-4 text-red text-xs font-semibold">
+              {errors.type.message}
+            </p>
+          )}
+        </div>
+
+        {/* Assigned To */}
+        <div className="space-y-2">
+          <InputRoot data-error={!!errors.assignedTo}>
+            <InputIcon>
+              <Icons.UserCheck />
+            </InputIcon>
+            <InputField
+              type="text"
+              placeholder="Assigned To"
+              {...register('assignedTo')}
+            />
+          </InputRoot>
+          {errors.assignedTo && (
+            <p className="ml-4 text-red text-xs font-semibold">
+              {errors.assignedTo.message}
+            </p>
+          )}
+        </div>
+
+        {/* Date Bought */}
+        <div className="space-y-2">
+          <InputRoot data-error={!!errors.datePurchased}>
+            <InputIcon>
+              <Icons.CalendarDays />
+            </InputIcon>
+            <InputField
+              type="text"
+              placeholder="Date of Purchase"
+              {...register('datePurchased')}
+            />
+          </InputRoot>
+          {errors.datePurchased && (
+            <p className="ml-4 text-red text-xs font-semibold">
+              {errors.datePurchased.message}
+            </p>
+          )}
+        </div>
+
+        {/* Asset Number */}
+        <div className="space-y-2">
+          <InputRoot data-error={!!errors.assetNumber}>
+            <InputIcon>
+              <Icons.FileDigit />
+            </InputIcon>
+            <InputField
+              type="text"
+              placeholder="Asset Number"
+              {...register('assetNumber')}
+            />
+          </InputRoot>
+          {errors.assetNumber && (
+            <p className="ml-4 text-red text-xs font-semibold">
+              {errors.assetNumber.message}
+            </p>
+          )}
+        </div>
+        <Button type="submit">
+          Register Asset
+          <Icons.Check />
+        </Button>
+      </form>
+    </div>
+  )
+}
