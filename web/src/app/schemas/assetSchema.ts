@@ -10,7 +10,10 @@ export const assetSchema = z.object({
     z.string().email(ASSET_ERROR_MESSAGES.ASSIGNED_TO).nullable()
   ),
   datePurchased: z.string().date(ASSET_ERROR_MESSAGES.DATE_PURCHASED),
-  assetNumber: z.string().min(2, ASSET_ERROR_MESSAGES.ASSET_NUMBER),
+  assetNumber: z
+    .string()
+    .min(2, ASSET_ERROR_MESSAGES.ASSET_NUMBER)
+    .startsWith('IT-', ASSET_ERROR_MESSAGES.ASSET_NUMBER),
 })
 
 export type AssetSchemaType = z.infer<typeof assetSchema>

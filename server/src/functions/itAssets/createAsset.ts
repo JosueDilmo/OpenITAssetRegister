@@ -5,8 +5,6 @@ import { staffTab } from '../../drizzle/schema/staffTab'
 import { ERROR_MESSAGES } from '../../errors/errorMessages'
 import {
   AuthenticationError,
-  AuthorizationError,
-  ConflictError,
   DatabaseError,
   NotFoundError,
 } from '../../errors/errorTypes'
@@ -51,7 +49,7 @@ export async function createAsset({
     }
 
     // Create new asset
-    return await db.transaction(async tx => {
+    await db.transaction(async tx => {
       const newAsset = await tx
         .insert(assetTab)
         .values({
@@ -71,20 +69,78 @@ export async function createAsset({
         throw new DatabaseError(ERROR_MESSAGES.DATABASE_CONNECTION_ERROR)
       }
 
-      // Return success message with assigned staff if applicable
-      return {
-        success: true,
-        message: 'Asset registered successfully',
-        staff: newAsset[0].assignedTo,
+      // Update staff history and changelod
+      if (assignedTo) {
+        const staff = await db.transaction(async trx => {
+          return await trx
+            .select()
+            .from(staffTab)
+            .where(eq(staffTab.email, assignedTo!))
+            .limit(1)
+        })
+
+        // Update staff assetHistoryList (append assetID if not already present)
+        const currentAssetHistory: string[] = Array.isArray(
+          staff[0].assetHistoryList
+        )
+          ? staff[0].assetHistoryList
+          : []
+        const updatedAssetHistory = currentAssetHistory.includes(newAsset[0].id)
+          ? currentAssetHistory
+          : [...currentAssetHistory, newAsset[0].id]
+        await tx
+          .update(staffTab)
+          .set({ assetHistoryList: updatedAssetHistory })
+          .where(eq(staffTab.email, assignedTo!))
+
+        // Update Staff changeLog
+        const staffChangeLog = Array.isArray(staff[0].changeLog)
+          ? staff[0].changeLog
+          : []
+        const newStaffChangeLog = {
+          updatedBy: createdBy,
+          updatedAt: new Date(),
+          updatedField: 'Asset History List',
+          previousValue: JSON.stringify({
+            assetHistoryList: staff[0].assetHistoryList,
+          }),
+          newValue: JSON.stringify({ assetHistoryList: updatedAssetHistory }),
+        }
+        const updatedStaffChangeLog = [...staffChangeLog, newStaffChangeLog]
+        await db
+          .update(staffTab)
+          .set({
+            changeLog: updatedStaffChangeLog,
+          })
+          .where(eq(staffTab.id, staff[0].id))
+
+        // Update Asset changeLog
+        const prevChangeLog = Array.isArray(newAsset[0].changeLog)
+          ? newAsset[0].changeLog
+          : []
+        const newChangeLog = {
+          updatedBy: createdBy,
+          updatedAt: new Date(),
+          updatedField: 'assignedTo',
+          previousValue: newAsset[0].assignedTo,
+          newValue: assignedTo,
+        }
+        const updatedChangeLog = [...prevChangeLog, newChangeLog]
+        await tx
+          .update(assetTab)
+          .set({ changeLog: updatedChangeLog })
+          .where(eq(assetTab.id, newAsset[0].id))
+
+        // Return success message with assigned staff if applicable
+        return {
+          success: true,
+          message: 'Asset registered successfully',
+          staff: newAsset[0].assignedTo,
+        }
       }
     })
   } catch (error) {
-    if (
-      error instanceof NotFoundError ||
-      error instanceof AuthorizationError ||
-      error instanceof ConflictError ||
-      error instanceof AuthenticationError
-    ) {
+    if (error instanceof NotFoundError) {
       throw error
     }
 

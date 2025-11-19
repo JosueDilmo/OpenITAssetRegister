@@ -12,5 +12,5 @@ export const ASSET_ERROR_MESSAGES = {
   TYPE: 'Insert Asset Type',
   ASSIGNED_TO: 'Insert Employee Email',
   DATE_PURCHASED: 'Valid Date: yyyy-mm-dd',
-  ASSET_NUMBER: 'Insert Asset Number',
+  ASSET_NUMBER: 'Asset Number = IT-XXXX',
 }
