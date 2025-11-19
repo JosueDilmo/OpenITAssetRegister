@@ -1,5 +1,7 @@
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { z } from 'zod'
+import { ERROR_MESSAGES } from '../../../errors/errorMessages'
+import { ValidationError } from '../../../errors/errorTypes'
 import { updateAssetDetails } from '../../../functions/itAssets/updateAssetDetails'
 
 export const assetDetails: FastifyPluginAsyncZod = async app => {
@@ -8,15 +10,15 @@ export const assetDetails: FastifyPluginAsyncZod = async app => {
     {
       schema: {
         params: z.object({
-          id: z.string(),
+          id: z.string().uuid(ERROR_MESSAGES.INVALID_ID),
         }),
         body: z.object({
-          status: z.string(),
-          note: z.string().nullable(),
-          updatedBy: z.string(),
+          status: z.string().min(2, ERROR_MESSAGES.INVALID_STATUS),
+          note: z.string().min(10, ERROR_MESSAGES.INVALID_NOTE).nullable(),
+          updatedBy: z.string().email(ERROR_MESSAGES.MISSING_UPDATED_BY),
         }),
         response: {
-          200: z.object({
+          201: z.object({
             success: z.boolean(),
             message: z.string(),
           }),
@@ -28,29 +30,32 @@ export const assetDetails: FastifyPluginAsyncZod = async app => {
       },
     },
     async (request, reply) => {
-      const staffId = request.params.id
-      const { status, note, updatedBy } = request.body
+      try {
+        const assetID = request.params.id
+        const { status, note, updatedBy } = request.body
+        if (!status.trim()) {
+          throw new ValidationError(ERROR_MESSAGES.ASSET_STATUS_REQUIRED)
+        }
+        if (!updatedBy.trim()) {
+          throw new ValidationError(ERROR_MESSAGES.MISSING_UPDATED_BY)
+        }
 
-      const result = await updateAssetDetails({
-        id: staffId,
-        status: status,
-        note: note,
-        updatedBy: updatedBy,
-      })
-
-      if (!result || !result.success) {
-        // Ensure 500 response has success: false
-        return reply.status(500).send({
-          success: false,
-          message: result?.message || 'Failed to manage asset',
+        const result = await updateAssetDetails({
+          id: assetID,
+          status: status,
+          note: note,
+          updatedBy: updatedBy,
         })
+        return reply
+          .status(201)
+          .send({ success: result.success, message: result.message })
+      } catch (error) {
+        if (error instanceof ValidationError) {
+          throw error
+        }
+        console.error('Error in editing asset details', error)
+        throw error
       }
-
-      const { success, message } = result
-      return reply.status(200).send({
-        success,
-        message,
-      })
     }
   )
 }

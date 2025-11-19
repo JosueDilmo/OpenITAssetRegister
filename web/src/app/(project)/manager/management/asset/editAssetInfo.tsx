@@ -1,5 +1,5 @@
 'use client'
-import { patchAssetAssignmentId, patchAssetDetailsId } from '@/http/api'
+import { patchAssetDetailsId } from '@/http/api'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'

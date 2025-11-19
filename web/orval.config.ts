@@ -12,7 +12,7 @@ export default defineConfig({
       client: 'fetch',
       httpClient: 'fetch',
       clean: true,
-
+      baseUrl: process.env.BASE_URL!,
       override: {
         fetch: {
           includeHttpResponseReturnType: false,

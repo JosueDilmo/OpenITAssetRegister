@@ -4,6 +4,7 @@ CREATE TABLE "asset" (
 	"name" text NOT NULL,
 	"type" text NOT NULL,
 	"assignedTo" text,
+	"dateAssigned" date,
 	"datePurchased" date NOT NULL,
 	"assetNumber" text NOT NULL,
 	"status" text DEFAULT 'ACTIVE' NOT NULL,

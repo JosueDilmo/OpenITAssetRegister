@@ -9,6 +9,7 @@ import {
   validatorCompiler,
 } from 'fastify-type-provider-zod'
 import { env } from './env'
+import { errorHandler } from './errors/errorHandler'
 import { assetById } from './routes/itAssets/delete/assetById'
 import { allAssets } from './routes/itAssets/get/allAssets'
 import { assetBySerial } from './routes/itAssets/get/assetBySerial'
@@ -24,6 +25,9 @@ const app = fastify().withTypeProvider<ZodTypeProvider>()
 
 app.setSerializerCompiler(serializerCompiler)
 app.setValidatorCompiler(validatorCompiler)
+
+// Register error handler
+app.register(errorHandler)
 
 app.register(fastifyCors, {
   origin: env.CORS_ORIGIN,

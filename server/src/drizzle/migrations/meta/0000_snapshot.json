@@ -1,5 +1,5 @@
 {
-  "id": "65931703-907c-47be-8850-7f26f4c3870e",
+  "id": "17849492-3002-4e1b-9ff6-284a3148625a",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -36,6 +36,12 @@
         "assignedTo": {
           "name": "assignedTo",
           "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dateAssigned": {
+          "name": "dateAssigned",
+          "type": "date",
           "primaryKey": false,
           "notNull": false
         },

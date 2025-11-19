@@ -1,27 +1,14 @@
 'use client'
+import { normalizeAssetData } from '@/app/actions/normalizeAssetData'
 import { postNewAsset } from '@/http/api'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as Icons from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import { z } from 'zod'
 import { Button } from '../../../components/button'
 import { InputField, InputIcon, InputRoot } from '../../../components/input'
-
-const assetSchema = z.object({
-  serialNumber: z.string().min(2, 'Insert Serial Number'),
-  name: z.string().min(2, 'Insert Asset Name'),
-  type: z.string().min(2, 'Insert Asset Type'),
-  assignedTo: z.preprocess(
-    value => (value === '' ? null : value),
-    z.string().email('Insert Employee Email').nullable()
-  ),
-  datePurchased: z.string().date('Valid Date: yyyy-mm-dd'),
-  assetNumber: z.string().min(2, 'Insert Asset Number'),
-})
-
-type assetSchema = z.infer<typeof assetSchema>
+import { type AssetSchemaType, assetSchema } from '../../../schemas/assetSchema'
 
 export interface AssetModuleProps {
   userEmail: string
@@ -35,7 +22,7 @@ export function AssetModule({ userEmail }: AssetModuleProps) {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<assetSchema>({
+  } = useForm<AssetSchemaType>({
     resolver: zodResolver(assetSchema),
   })
 
@@ -46,16 +33,16 @@ export function AssetModule({ userEmail }: AssetModuleProps) {
     assignedTo,
     datePurchased,
     assetNumber,
-  }: assetSchema) {
-    const normalizedData = {
-      serialNumber: serialNumber.toUpperCase(),
-      name: name.toLocaleUpperCase(),
-      type: type.toUpperCase(),
-      assignedTo: assignedTo?.toLowerCase() || null,
+  }: AssetSchemaType) {
+    const normalizedData = normalizeAssetData({
+      serialNumber,
+      name,
+      type,
+      assignedTo,
       datePurchased,
-      assetNumber: assetNumber.toUpperCase(),
+      assetNumber,
       createdBy: userEmail,
-    }
+    })
 
     const { success, message, staff } = await postNewAsset(normalizedData)
     toast[success ? 'success' : 'error'](message)

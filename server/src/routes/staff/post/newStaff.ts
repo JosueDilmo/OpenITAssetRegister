@@ -1,5 +1,7 @@
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { z } from 'zod'
+import { ERROR_MESSAGES } from '../../../errors/errorMessages'
+import { ValidationError } from '../../../errors/errorTypes'
 import { createStaff } from '../../../functions/staff/createStaff'
 
 export const newStaff: FastifyPluginAsyncZod = async app => {
@@ -8,11 +10,11 @@ export const newStaff: FastifyPluginAsyncZod = async app => {
     {
       schema: {
         body: z.object({
-          name: z.string(),
-          email: z.string().email(),
-          department: z.string(),
-          jobTitle: z.string(),
-          createdBy: z.string().email(),
+          name: z.string().min(2, ERROR_MESSAGES.INVALID_NAME),
+          email: z.string().email(ERROR_MESSAGES.INVALID_EMAIL),
+          department: z.string().min(2, ERROR_MESSAGES.INVALID_DEPARTMENT),
+          jobTitle: z.string().min(2, ERROR_MESSAGES.INVALID_JOB_TITLE),
+          createdBy: z.string().email(ERROR_MESSAGES.MISSING_REQUIRED_FIELDS),
         }),
         response: {
           201: z.object({
@@ -29,31 +31,45 @@ export const newStaff: FastifyPluginAsyncZod = async app => {
       },
     },
     async (request, reply) => {
-      const { name, email, department, jobTitle, createdBy } = request.body
+      try {
+        const { name, email, department, jobTitle, createdBy } = request.body
 
-      const result = await createStaff({
-        name,
-        email,
-        department,
-        jobTitle,
-        createdBy,
-      })
+        if (!name.trim()) {
+          throw new ValidationError(ERROR_MESSAGES.STAFF_NAME_REQUIRED)
+        }
 
-      if (!result || !result.success) {
-        // Ensure 500 response has success: false
-        return reply.status(500).send({
-          success: false,
-          message: result?.message || 'Failed to register staff',
-          staff: '',
+        if (!email.trim()) {
+          throw new ValidationError(ERROR_MESSAGES.STAFF_EMAIL_REQUIRED)
+        }
+
+        if (!department.trim()) {
+          throw new ValidationError(ERROR_MESSAGES.STAFF_DEPARTMENT_REQUIRED)
+        }
+
+        if (!jobTitle.trim()) {
+          throw new ValidationError(ERROR_MESSAGES.STAFF_JOB_TITLE_REQUIRED)
+        }
+
+        const result = await createStaff({
+          name,
+          email,
+          department,
+          jobTitle,
+          createdBy,
         })
-      }
+        return reply.status(201).send({
+          success: result.success,
+          message: result.message,
+          staff: result.staff,
+        })
+      } catch (error) {
+        if (error instanceof ValidationError) {
+          throw error
+        }
 
-      const { success, message, staff } = result
-      return reply.status(201).send({
-        success,
-        message,
-        staff,
-      })
+        console.error('Error creating staff:', error)
+        throw error
+      }
     }
   )
 }

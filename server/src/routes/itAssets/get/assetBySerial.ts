@@ -1,5 +1,11 @@
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { z } from 'zod'
+import { ERROR_MESSAGES } from '../../../errors/errorMessages'
+import {
+  DatabaseError,
+  NotFoundError,
+  ValidationError,
+} from '../../../errors/errorTypes'
 import { getAssetBySerial } from '../../../functions/itAssets/getAssetBySerial'
 
 export const assetBySerial: FastifyPluginAsyncZod = async app => {
@@ -8,7 +14,7 @@ export const assetBySerial: FastifyPluginAsyncZod = async app => {
     {
       schema: {
         querystring: z.object({
-          serialNumber: z.string(),
+          serialNumber: z.string().min(2, ERROR_MESSAGES.INVALID_SERIAL_NUMBER),
         }),
         response: {
           200: z.object({
@@ -30,36 +36,70 @@ export const assetBySerial: FastifyPluginAsyncZod = async app => {
               })
             ),
           }),
+          400: z.object({
+            success: z.boolean(),
+            error: z.object({
+              code: z.string(),
+              message: z.string(),
+              details: z.any().optional(),
+            }),
+          }),
+          404: z.object({
+            success: z.boolean(),
+            error: z.object({
+              code: z.string(),
+              message: z.string(),
+              details: z.any().optional(),
+            }),
+          }),
+          500: z.object({
+            success: z.boolean(),
+            error: z.object({
+              code: z.string(),
+              message: z.string(),
+              details: z.any().optional(),
+            }),
+          }),
         },
       },
     },
     async (request, reply) => {
-      const { serialNumber } = request.query
-      const { success, message, assetList } = await getAssetBySerial({
-        serialNumber,
-      })
+      try {
+        const { serialNumber } = request.query
+        if (!serialNumber.trim()) {
+          throw new ValidationError(ERROR_MESSAGES.ASSET_SERIAL_REQUIRED)
+        }
+        const { success, message, assetList } = await getAssetBySerial({
+          serialNumber,
+        })
 
-      const filteredAsset = serialNumber
-        ? assetList.filter(asset => asset.serialNumber === serialNumber)
-        : assetList
-
-      return reply.status(200).send({
-        success,
-        message,
-        assetList: filteredAsset.map(asset => ({
-          id: asset.id,
-          serialNumber: asset.serialNumber,
-          name: asset.name,
-          type: asset.type,
-          assignedTo: asset.assignedTo,
-          datePurchased: asset.datePurchased,
-          assetNumber: asset.assetNumber,
-          status: asset.status,
-          note: asset.note,
-          createdAt: asset.createdAt.toString(),
-          createdBy: asset.createdBy,
-        })),
-      })
+        return reply.status(200).send({
+          success,
+          message,
+          assetList: assetList.map(asset => ({
+            id: asset.id,
+            serialNumber: asset.serialNumber,
+            name: asset.name,
+            type: asset.type,
+            assignedTo: asset.assignedTo,
+            datePurchased: asset.datePurchased,
+            assetNumber: asset.assetNumber,
+            status: asset.status,
+            note: asset.note,
+            createdAt: asset.createdAt.toString(),
+            createdBy: asset.createdBy,
+          })),
+        })
+      } catch (error) {
+        if (
+          error instanceof ValidationError ||
+          error instanceof NotFoundError
+        ) {
+          throw error
+        }
+        console.log('Error fetching asset by serial:', error)
+        throw error
+      }
     }
   )
 }

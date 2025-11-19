@@ -1,5 +1,7 @@
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { z } from 'zod'
+import { ERROR_MESSAGES } from '../../../errors/errorMessages'
+import { ValidationError } from '../../../errors/errorTypes'
 import { updateStaffDetails } from '../../../functions/staff/updateStaffDetails'
 
 export const staffDetails: FastifyPluginAsyncZod = async app => {
@@ -8,49 +10,75 @@ export const staffDetails: FastifyPluginAsyncZod = async app => {
     {
       schema: {
         params: z.object({
-          id: z.string(),
+          id: z.string().uuid(ERROR_MESSAGES.INVALID_ID),
         }),
         body: z.object({
-          status: z.string(),
+          status: z.string().min(1, ERROR_MESSAGES.INVALID_STATUS),
           note: z.string().nullable(),
-          updatedBy: z.string(),
+          updatedBy: z.string().min(1, ERROR_MESSAGES.MISSING_UPDATED_BY),
         }),
         response: {
           200: z.object({
             success: z.boolean(),
             message: z.string(),
           }),
+          400: z.object({
+            success: z.boolean(),
+            error: z.object({
+              code: z.string(),
+              message: z.string(),
+              details: z.any().optional(),
+            }),
+          }),
+          404: z.object({
+            success: z.boolean(),
+            error: z.object({
+              code: z.string(),
+              message: z.string(),
+              details: z.any().optional(),
+            }),
+          }),
           500: z.object({
             success: z.boolean(),
-            message: z.string(),
+            error: z.object({
+              code: z.string(),
+              message: z.string(),
+              details: z.any().optional(),
+            }),
           }),
         },
       },
     },
     async (request, reply) => {
-      const staffId = request.params.id
-      const { status, note, updatedBy } = request.body
+      try {
+        const staffId = request.params.id
+        const { status, note, updatedBy } = request.body
 
-      const result = await updateStaffDetails({
-        id: staffId,
-        status: status,
-        note: note,
-        updatedBy: updatedBy,
-      })
+        if (!staffId.trim()) {
+          throw new ValidationError(ERROR_MESSAGES.STAFF_ID_REQUIRED)
+        }
 
-      if (!result || !result.success) {
-        // Ensure 500 response has success: false
-        return reply.status(500).send({
-          success: false,
-          message: result?.message || 'Failed to manage staff details',
+        if (!updatedBy.trim()) {
+          throw new ValidationError(ERROR_MESSAGES.MISSING_UPDATED_BY)
+        }
+
+        if (!status.trim()) {
+          throw new ValidationError(ERROR_MESSAGES.STAFF_STATUS_REQUIRED)
+        }
+
+        const result = await updateStaffDetails({
+          id: staffId,
+          status: status,
+          note: note,
+          updatedBy: updatedBy,
         })
-      }
 
-      const { success, message } = result
-      return reply.status(200).send({
-        success,
-        message,
-      })
+        return reply.status(200).send(result)
+      } catch (error) {
+        if (error instanceof ValidationError) {
+          throw error
+        }
+      }
     }
   )
 }

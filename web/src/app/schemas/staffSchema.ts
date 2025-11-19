@@ -1,10 +1,10 @@
 import { z } from 'zod'
-import { ERROR_MESSAGES } from '../constants/errorMessages'
+import { STAFF_ERROR_MESSAGES } from '../constants/errorMessages'
 
 export const staffSchema = z.object({
-  name: z.string().min(2, ERROR_MESSAGES.name),
-  email: z.string().email(ERROR_MESSAGES.email),
-  department: z.string().min(2, ERROR_MESSAGES.department),
-  jobTitle: z.string().min(2, ERROR_MESSAGES.jobTitle),
+  name: z.string().min(2, STAFF_ERROR_MESSAGES.NAME),
+  email: z.string().email(STAFF_ERROR_MESSAGES.EMAIL),
+  department: z.string().min(2, STAFF_ERROR_MESSAGES.DEPARTMENT),
+  jobTitle: z.string().min(2, STAFF_ERROR_MESSAGES.JOB_TITLE),
 })
 export type StaffSchemaType = z.infer<typeof staffSchema>

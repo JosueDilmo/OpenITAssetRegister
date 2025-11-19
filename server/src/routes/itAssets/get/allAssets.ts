@@ -1,5 +1,6 @@
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { z } from 'zod'
+import { ERROR_MESSAGES } from '../../../errors/errorMessages'
 import { getAsset } from '../../../functions/itAssets/getAsset'
 
 export const allAssets: FastifyPluginAsyncZod = async app => {
@@ -8,12 +9,12 @@ export const allAssets: FastifyPluginAsyncZod = async app => {
     {
       schema: {
         querystring: z.object({
-          id: z.string().optional(),
+          id: z.string().uuid(ERROR_MESSAGES.INVALID_ID).optional(),
         }),
         response: {
           200: z.array(
             z.object({
-              id: z.string(),
+              id: z.string().uuid(),
               serialNumber: z.string(),
               name: z.string(),
               type: z.string(),
@@ -36,42 +37,55 @@ export const allAssets: FastifyPluginAsyncZod = async app => {
               ),
             })
           ),
+          500: z.object({
+            success: z.boolean(),
+            error: z.object({
+              code: z.string(),
+              message: z.string(),
+              details: z.any().optional(),
+            }),
+          }),
         },
       },
     },
     async (request, reply) => {
-      const { id } = request.query
-      const { allAsset } = await getAsset()
+      try {
+        const { id } = request.query
+        const { allAsset } = await getAsset()
 
-      const filteredAsset = id
-        ? allAsset.filter(asset => asset.id === id)
-        : allAsset
+        const filteredAsset = id
+          ? allAsset.filter(asset => asset.id === id)
+          : allAsset
 
-      return reply.status(200).send(
-        filteredAsset.map(asset => {
-          return {
-            id: asset.id,
-            serialNumber: asset.serialNumber,
-            name: asset.name,
-            type: asset.type,
-            assignedTo: asset.assignedTo,
-            dateAssigned: asset.dateAssigned,
-            datePurchased: asset.datePurchased,
-            assetNumber: asset.assetNumber,
-            status: asset.status,
-            note: asset.note,
-            createdAt: asset.createdAt.toString(),
-            createdBy: asset.createdBy,
-            changeLog: asset.changeLog.map(log => ({
-              updatedBy: log.updatedBy,
-              updatedAt: log.updatedAt.toString(),
-              updatedField: log.updatedField,
-              previousValue: log.previousValue,
-              newValue: log.newValue,
-            })),
-          }
-        })
-      )
+        return reply.status(200).send(
+          filteredAsset.map(asset => {
+            return {
+              id: asset.id,
+              serialNumber: asset.serialNumber,
+              name: asset.name,
+              type: asset.type,
+              assignedTo: asset.assignedTo,
+              dateAssigned: asset.dateAssigned,
+              datePurchased: asset.datePurchased,
+              assetNumber: asset.assetNumber,
+              status: asset.status,
+              note: asset.note,
+              createdAt: asset.createdAt.toString(),
+              createdBy: asset.createdBy,
+              changeLog: asset.changeLog.map(log => ({
+                updatedBy: log.updatedBy,
+                updatedAt: log.updatedAt.toString(),
+                updatedField: log.updatedField,
+                previousValue: log.previousValue,
+                newValue: log.newValue,
+              })),
+            }
+          })
+        )
+      } catch (error) {
+        console.error('Error fetching assets:', error)
+        throw error
+      }
     }
   )
 }

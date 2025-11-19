@@ -2,6 +2,14 @@ import { eq } from 'drizzle-orm'
 import { db } from '../../drizzle/client'
 import { assetTab } from '../../drizzle/schema/assetTab'
 import { staffTab } from '../../drizzle/schema/staffTab'
+import { ERROR_MESSAGES } from '../../errors/errorMessages'
+import {
+  AuthenticationError,
+  AuthorizationError,
+  ConflictError,
+  DatabaseError,
+  NotFoundError,
+} from '../../errors/errorTypes'
 import type { AssignAssetWithConfirmationParams } from '../../types'
 
 export async function assignAssetToStaffWithConfirmation({
@@ -10,9 +18,9 @@ export async function assignAssetToStaffWithConfirmation({
   assetId,
   updatedBy,
 }: AssignAssetWithConfirmationParams) {
-  // Begin Transaction
-  return db
-    .transaction(async trx => {
+  // Begin database Transaction
+  try {
+    return await db.transaction(async trx => {
       // Check if the new email belongs to a staff
       const staff = await trx
         .select()
@@ -20,10 +28,7 @@ export async function assignAssetToStaffWithConfirmation({
         .where(eq(staffTab.email, staffEmail))
         .limit(1)
       if (staff.length === 0) {
-        return {
-          success: false,
-          message: 'The provided email does not belong to a valid staff member',
-        }
+        throw new NotFoundError(ERROR_MESSAGES.STAFF_NOT_FOUND)
       }
 
       // Find the current asset assignment
@@ -33,10 +38,7 @@ export async function assignAssetToStaffWithConfirmation({
         .where(eq(assetTab.id, assetId))
         .limit(1)
       if (asset.length === 0) {
-        return {
-          success: false,
-          message: 'Asset not found',
-        }
+        throw new NotFoundError(ERROR_MESSAGES.ASSET_NOT_FOUND)
       }
       const previousAssignedTo = asset[0].assignedTo
 
@@ -94,11 +96,18 @@ export async function assignAssetToStaffWithConfirmation({
         message: 'Asset assigned successfully',
       }
     })
-    .catch(error => {
-      console.error('Error assigning asset:', error)
-      return {
-        success: false,
-        message: 'An error occurred while assigning the asset',
-      }
-    })
+  } catch (error) {
+    if (
+      error instanceof NotFoundError ||
+      error instanceof AuthorizationError ||
+      error instanceof ConflictError ||
+      error instanceof AuthenticationError
+    ) {
+      throw error
+    }
+
+    // Log unexpected errors
+    console.error('Error assigning asset:', error)
+    throw new DatabaseError(ERROR_MESSAGES.ASSET_ASSIGNMENT_FAILED, error)
+  }
 }

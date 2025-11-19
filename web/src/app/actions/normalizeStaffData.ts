@@ -14,10 +14,10 @@ export function normalizeStaffData({
   createdBy,
 }: staffNormalizeData) {
   return {
-    name: name.toUpperCase(),
-    email: email.toLowerCase(),
-    department: department.toUpperCase(),
-    jobTitle: jobTitle.toUpperCase(),
+    name: name.toUpperCase().trim(),
+    email: email.toLowerCase().trim(),
+    department: department.toUpperCase().trim(),
+    jobTitle: jobTitle.toUpperCase().trim(),
     createdBy,
   }
 }

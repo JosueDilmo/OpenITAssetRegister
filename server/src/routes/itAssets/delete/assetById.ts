@@ -1,5 +1,7 @@
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { z } from 'zod'
+import { ERROR_MESSAGES } from '../../../errors/errorMessages'
+import { ValidationError } from '../../../errors/errorTypes'
 import { removeAssetAssignment } from '../../../functions/itAssets/removeAssetAssignment'
 
 export const assetById: FastifyPluginAsyncZod = async app => {
@@ -8,10 +10,10 @@ export const assetById: FastifyPluginAsyncZod = async app => {
     {
       schema: {
         params: z.object({
-          id: z.string(),
+          id: z.string().uuid(ERROR_MESSAGES.INVALID_ID),
         }),
         body: z.object({
-          updatedBy: z.string(),
+          updatedBy: z.string().email(ERROR_MESSAGES.MISSING_UPDATED_BY),
         }),
         response: {
           200: z.object({
@@ -20,42 +22,53 @@ export const assetById: FastifyPluginAsyncZod = async app => {
           }),
           400: z.object({
             success: z.boolean(),
-            message: z.string(),
+            error: z.object({
+              code: z.string(),
+              message: z.string(),
+              details: z.any().optional(),
+            }),
+          }),
+          404: z.object({
+            success: z.boolean(),
+            error: z.object({
+              code: z.string(),
+              message: z.string(),
+              details: z.any().optional(),
+            }),
           }),
           500: z.object({
             success: z.boolean(),
-            message: z.string(),
+            error: z.object({
+              code: z.string(),
+              message: z.string(),
+              details: z.any().optional(),
+            }),
           }),
         },
       },
     },
     async (request, reply) => {
-      const assetId = request.params.id
-      const { updatedBy } = request.body
+      try {
+        const assetId = request.params.id
+        const { updatedBy } = request.body
 
-      if (!assetId) {
-        return reply.status(400).send({
-          success: false,
-          message: 'Asset ID is required',
+        if (!assetId) {
+          throw new ValidationError(ERROR_MESSAGES.ASSET_ID_REQUIRED)
+        }
+
+        const result = await removeAssetAssignment({ assetId, updatedBy })
+
+        return reply.status(200).send({
+          success: result.success,
+          message: result.message,
         })
+      } catch (error) {
+        if (error instanceof ValidationError) {
+          throw error
+        }
+        console.error('Error removing asset assignment:', error)
+        throw error
       }
-
-      const result = await removeAssetAssignment({ assetId, updatedBy })
-
-      if (!result || !result.success) {
-        // Ensure 500 response has success: false
-        return reply.status(500).send({
-          success: false,
-          message: result?.message || 'Failed to remove asset',
-        })
-      }
-
-      const { success, message } = result
-
-      return reply.status(200).send({
-        success,
-        message,
-      })
     }
   )
 }

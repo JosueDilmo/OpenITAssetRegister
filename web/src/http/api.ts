@@ -4,15 +4,17 @@
  * IT Platform
  * OpenAPI spec version: 0.0.1
  */
-import { BASE_API_URL } from '@/app/constants/baseUrl'
-
 export type PostNewAssetBody = {
+  /** @minLength 2 */
   serialNumber: string
+  /** @minLength 2 */
   name: string
+  /** @minLength 2 */
   type: string
   /** @nullable */
   assignedTo: string | null
   datePurchased: string
+  /** @minLength 2 */
   assetNumber: string
   createdBy: string
 }
@@ -24,17 +26,46 @@ export type PostNewAsset201 = {
   staff: string | null
 }
 
+export type PostNewAsset400Error = {
+  code: string
+  message: string
+  details?: unknown
+}
+
+export type PostNewAsset400 = {
+  success: boolean
+  error: PostNewAsset400Error
+}
+
+export type PostNewAsset404Error = {
+  code: string
+  message: string
+  details?: unknown
+}
+
+export type PostNewAsset404 = {
+  success: boolean
+  error: PostNewAsset404Error
+}
+
+export type PostNewAsset500Error = {
+  code: string
+  message: string
+  details?: unknown
+}
+
 export type PostNewAsset500 = {
   success: boolean
-  message: string
-  /** @nullable */
-  staff: string | null
+  error: PostNewAsset500Error
 }
 
 export type PostNewStaffBody = {
+  /** @minLength 2 */
   name: string
   email: string
+  /** @minLength 2 */
   department: string
+  /** @minLength 2 */
   jobTitle: string
   createdBy: string
 }
@@ -79,6 +110,17 @@ export type GetAllStaff200Item = {
   changeLog: GetAllStaff200ItemChangeLogItem[]
 }
 
+export type GetAllStaff500Error = {
+  code: string
+  message: string
+  details?: unknown
+}
+
+export type GetAllStaff500 = {
+  success: boolean
+  error: GetAllStaff500Error
+}
+
 export type GetAllAssetsParams = {
   id?: string
 }
@@ -112,6 +154,17 @@ export type GetAllAssets200Item = {
   changeLog: GetAllAssets200ItemChangeLogItem[]
 }
 
+export type GetAllAssets500Error = {
+  code: string
+  message: string
+  details?: unknown
+}
+
+export type GetAllAssets500 = {
+  success: boolean
+  error: GetAllAssets500Error
+}
+
 export type DeleteAssetByIdBody = {
   updatedBy: string
 }
@@ -121,14 +174,37 @@ export type DeleteAssetById200 = {
   message: string
 }
 
+export type DeleteAssetById400Error = {
+  code: string
+  message: string
+  details?: unknown
+}
+
 export type DeleteAssetById400 = {
   success: boolean
+  error: DeleteAssetById400Error
+}
+
+export type DeleteAssetById404Error = {
+  code: string
   message: string
+  details?: unknown
+}
+
+export type DeleteAssetById404 = {
+  success: boolean
+  error: DeleteAssetById404Error
+}
+
+export type DeleteAssetById500Error = {
+  code: string
+  message: string
+  details?: unknown
 }
 
 export type DeleteAssetById500 = {
   success: boolean
-  message: string
+  error: DeleteAssetById500Error
 }
 
 export type PostAssetToStaffEmailBody = {
@@ -142,19 +218,51 @@ export type PostAssetToStaffEmail200 = {
   message: string
 }
 
+export type PostAssetToStaffEmail400Error = {
+  code: string
+  message: string
+  details?: unknown
+}
+
+export type PostAssetToStaffEmail400 = {
+  success: boolean
+  error: PostAssetToStaffEmail400Error
+}
+
+export type PostAssetToStaffEmail404Error = {
+  code: string
+  message: string
+  details?: unknown
+}
+
+export type PostAssetToStaffEmail404 = {
+  success: boolean
+  error: PostAssetToStaffEmail404Error
+}
+
+export type PostAssetToStaffEmail500Error = {
+  code: string
+  message: string
+  details?: unknown
+}
+
 export type PostAssetToStaffEmail500 = {
   success: boolean
-  message: string
+  error: PostAssetToStaffEmail500Error
 }
 
 export type PatchAssetDetailsIdBody = {
+  /** @minLength 2 */
   status: string
-  /** @nullable */
+  /**
+   * @minLength 10
+   * @nullable
+   */
   note: string | null
   updatedBy: string
 }
 
-export type PatchAssetDetailsId200 = {
+export type PatchAssetDetailsId201 = {
   success: boolean
   message: string
 }
@@ -165,9 +273,11 @@ export type PatchAssetDetailsId500 = {
 }
 
 export type PatchStaffDetailsIdBody = {
+  /** @minLength 1 */
   status: string
   /** @nullable */
   note: string | null
+  /** @minLength 1 */
   updatedBy: string
 }
 
@@ -176,9 +286,37 @@ export type PatchStaffDetailsId200 = {
   message: string
 }
 
+export type PatchStaffDetailsId400Error = {
+  code: string
+  message: string
+  details?: unknown
+}
+
+export type PatchStaffDetailsId400 = {
+  success: boolean
+  error: PatchStaffDetailsId400Error
+}
+
+export type PatchStaffDetailsId404Error = {
+  code: string
+  message: string
+  details?: unknown
+}
+
+export type PatchStaffDetailsId404 = {
+  success: boolean
+  error: PatchStaffDetailsId404Error
+}
+
+export type PatchStaffDetailsId500Error = {
+  code: string
+  message: string
+  details?: unknown
+}
+
 export type PatchStaffDetailsId500 = {
   success: boolean
-  message: string
+  error: PatchStaffDetailsId500Error
 }
 
 export type GetAssetBySerialParams = {
@@ -207,6 +345,39 @@ export type GetAssetBySerial200 = {
   assetList: GetAssetBySerial200AssetListItem[]
 }
 
+export type GetAssetBySerial400Error = {
+  code: string
+  message: string
+  details?: unknown
+}
+
+export type GetAssetBySerial400 = {
+  success: boolean
+  error: GetAssetBySerial400Error
+}
+
+export type GetAssetBySerial404Error = {
+  code: string
+  message: string
+  details?: unknown
+}
+
+export type GetAssetBySerial404 = {
+  success: boolean
+  error: GetAssetBySerial404Error
+}
+
+export type GetAssetBySerial500Error = {
+  code: string
+  message: string
+  details?: unknown
+}
+
+export type GetAssetBySerial500 = {
+  success: boolean
+  error: GetAssetBySerial500Error
+}
+
 export type GetAssetByStaffEmailParams = {
   email: string
 }
@@ -225,22 +396,30 @@ export type GetAssetByStaffEmail200 = {
   assetList: GetAssetByStaffEmail200AssetListItem[]
 }
 
-export type GetAssetByStaffEmail500AssetListItem = {
-  id: string
-  serialNumber: string
-  name: string
-  /** @nullable */
-  email: string | null
+export type GetAssetByStaffEmail400Error = {
+  code: string
+  message: string
+  details?: unknown
+}
+
+export type GetAssetByStaffEmail400 = {
+  success: boolean
+  error: GetAssetByStaffEmail400Error
+}
+
+export type GetAssetByStaffEmail500Error = {
+  code: string
+  message: string
+  details?: unknown
 }
 
 export type GetAssetByStaffEmail500 = {
   success: boolean
-  message: string
-  assetList: GetAssetByStaffEmail500AssetListItem[]
+  error: GetAssetByStaffEmail500Error
 }
 
 export const getPostNewAssetUrl = () => {
-  return `${BASE_API_URL}/newAsset`
+  return `http://localhost:3333/newAsset`
 }
 
 export const postNewAsset = async (
@@ -261,7 +440,7 @@ export const postNewAsset = async (
 }
 
 export const getPostNewStaffUrl = () => {
-  return `${BASE_API_URL}/newStaff`
+  return `http://localhost:3333/newStaff`
 }
 
 export const postNewStaff = async (
@@ -293,8 +472,8 @@ export const getGetAllStaffUrl = (params?: GetAllStaffParams) => {
   const stringifiedParams = normalizedParams.toString()
 
   return stringifiedParams.length > 0
-    ? `${BASE_API_URL}/allStaff?${stringifiedParams}`
-    : `${BASE_API_URL}/allStaff`
+    ? `http://localhost:3333/allStaff?${stringifiedParams}`
+    : `http://localhost:3333/allStaff`
 }
 
 export const getAllStaff = async (
@@ -324,8 +503,8 @@ export const getGetAllAssetsUrl = (params?: GetAllAssetsParams) => {
   const stringifiedParams = normalizedParams.toString()
 
   return stringifiedParams.length > 0
-    ? `${BASE_API_URL}/allAssets?${stringifiedParams}`
-    : `${BASE_API_URL}/allAssets`
+    ? `http://localhost:3333/allAssets?${stringifiedParams}`
+    : `http://localhost:3333/allAssets`
 }
 
 export const getAllAssets = async (
@@ -344,7 +523,7 @@ export const getAllAssets = async (
 }
 
 export const getDeleteAssetByIdUrl = (id: string) => {
-  return `${BASE_API_URL}/assetBy/${id}`
+  return `http://localhost:3333/assetBy/${id}`
 }
 
 export const deleteAssetById = async (
@@ -366,7 +545,7 @@ export const deleteAssetById = async (
 }
 
 export const getPostAssetToStaffEmailUrl = (email: string) => {
-  return `${BASE_API_URL}/assetToStaff/${email}`
+  return `http://localhost:3333/assetToStaff/${email}`
 }
 
 export const postAssetToStaffEmail = async (
@@ -388,14 +567,14 @@ export const postAssetToStaffEmail = async (
 }
 
 export const getPatchAssetDetailsIdUrl = (id: string) => {
-  return `${BASE_API_URL}/assetDetails/${id}`
+  return `http://localhost:3333/assetDetails/${id}`
 }
 
 export const patchAssetDetailsId = async (
   id: string,
   patchAssetDetailsIdBody: PatchAssetDetailsIdBody,
   options?: RequestInit
-): Promise<PatchAssetDetailsId200> => {
+): Promise<PatchAssetDetailsId201> => {
   const res = await fetch(getPatchAssetDetailsIdUrl(id), {
     ...options,
     method: 'PATCH',
@@ -404,13 +583,13 @@ export const patchAssetDetailsId = async (
   })
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text()
-  const data: PatchAssetDetailsId200 = body ? JSON.parse(body) : {}
+  const data: PatchAssetDetailsId201 = body ? JSON.parse(body) : {}
 
   return data
 }
 
 export const getPatchStaffDetailsIdUrl = (id: string) => {
-  return `${BASE_API_URL}/staffDetails/${id}`
+  return `http://localhost:3333/staffDetails/${id}`
 }
 
 export const patchStaffDetailsId = async (
@@ -443,8 +622,8 @@ export const getGetAssetBySerialUrl = (params: GetAssetBySerialParams) => {
   const stringifiedParams = normalizedParams.toString()
 
   return stringifiedParams.length > 0
-    ? `${BASE_API_URL}/assetBySerial?${stringifiedParams}`
-    : `${BASE_API_URL}/assetBySerial`
+    ? `http://localhost:3333/assetBySerial?${stringifiedParams}`
+    : `http://localhost:3333/assetBySerial`
 }
 
 export const getAssetBySerial = async (
@@ -476,8 +655,8 @@ export const getGetAssetByStaffEmailUrl = (
   const stringifiedParams = normalizedParams.toString()
 
   return stringifiedParams.length > 0
-    ? `${BASE_API_URL}/assetByStaffEmail?${stringifiedParams}`
-    : `${BASE_API_URL}/assetByStaffEmail`
+    ? `http://localhost:3333/assetByStaffEmail?${stringifiedParams}`
+    : `http://localhost:3333/assetByStaffEmail`
 }
 
 export const getAssetByStaffEmail = async (

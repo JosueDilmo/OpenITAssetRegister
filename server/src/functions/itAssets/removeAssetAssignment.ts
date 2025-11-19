@@ -1,23 +1,21 @@
 import { eq } from 'drizzle-orm'
 import { db } from '../../drizzle/client'
 import { assetTab } from '../../drizzle/schema/assetTab'
+import { ERROR_MESSAGES } from '../../errors/errorMessages'
+import {
+  DatabaseError,
+  NotFoundError,
+  ValidationError,
+} from '../../errors/errorTypes'
 import type { DeleteAssetParams } from '../../types'
 
 export async function removeAssetAssignment({
   assetId,
   updatedBy,
 }: DeleteAssetParams) {
-  // Check if assetID is provided
-  if (!assetId) {
-    return {
-      success: false,
-      message: 'Asset ID is required',
-    }
-  }
-
   // Begin Transaction
-  return db
-    .transaction(async trx => {
+  try {
+    return await db.transaction(async trx => {
       // Get the asset to be removed
       const assetResult = await trx
         .select()
@@ -25,10 +23,7 @@ export async function removeAssetAssignment({
         .where(eq(assetTab.id, assetId))
         .limit(1)
       if (assetResult.length === 0) {
-        return {
-          success: false,
-          message: 'Asset not found',
-        }
+        throw new NotFoundError(ERROR_MESSAGES.ASSET_NOT_FOUND)
       }
 
       const asset = assetResult[0]
@@ -63,21 +58,18 @@ export async function removeAssetAssignment({
 
       // Return success message
       if (assetRemoved.length === 0) {
-        return {
-          success: false,
-          message: 'Failed to remove asset',
-        }
+        throw new DatabaseError(ERROR_MESSAGES.ASSET_REMOVAL_FAILED)
       }
       return {
         success: true,
         message: 'Asset removed successfully',
       }
     })
-    .catch(error => {
-      console.error('Error removing asset assignment:', error)
-      return {
-        success: false,
-        message: 'An error occurred while removing the asset assignment',
-      }
-    })
+  } catch (error) {
+    if (error instanceof NotFoundError || error instanceof DatabaseError) {
+      throw error
+    }
+    console.error('Error removing asset assignment:', error)
+    throw new DatabaseError(ERROR_MESSAGES.ASSET_REMOVAL_FAILED, error)
+  }
 }
