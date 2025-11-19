@@ -1,26 +1,11 @@
 'use client'
 import { BoxField, BoxRoot } from '@/app/components/box'
+import type { AssetProps } from '@/app/interface/assetInterfaces'
+import type { EditStaffAssetListProps } from '@/app/interface/staffInterfaces'
 import { deleteAssetById, getAssetByStaffEmail } from '@/http/api'
 import * as Icons from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-
-interface EditStaffAssetListProps {
-  email: string
-  userEmail: string
-  userRole: string
-}
-
-interface AssetProps {
-  success: boolean
-  message: string
-  assetList: {
-    id: string
-    serialNumber: string
-    name: string
-    email: string | null
-  }[]
-}
 
 export function EditStaffAssetList({
   email,

@@ -1,43 +1,22 @@
 'use client'
+import type { EditAssetInfoProps } from '@/app/interface/assetInterfaces'
+import {
+  type AssetDetailsParams,
+  AssetDetailsSchema,
+} from '@/app/schemas/assetSchema'
 import { patchAssetDetailsId } from '@/http/api'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import { z } from 'zod'
 import { Button } from '../../../../components/button'
 import { InputField, InputRoot } from '../../../../components/input'
-
-interface EditAssetComponentProps {
-  data: Array<{
-    id: string
-    serialNumber: string
-    name: string
-    type: string
-    assignedTo: string | null
-    dateAssigned: string | null
-    datePurchased: string
-    assetNumber: string
-    createdAt: string
-    status: string
-    note: string | null
-  }>
-  userEmail: string
-  userRole: string
-}
-
-const AssetDetailsSchema = z.object({
-  status: z.string().min(2, 'Insert valid status'),
-  note: z.string().min(10, 'Insert a valid annotation').optional().nullable(),
-})
-
-type AssetDetailsParams = z.infer<typeof AssetDetailsSchema>
 
 export function EditAssetInfo({
   data,
   userEmail,
   userRole,
-}: EditAssetComponentProps) {
+}: EditAssetInfoProps) {
   const {
     handleSubmit,
     setValue,

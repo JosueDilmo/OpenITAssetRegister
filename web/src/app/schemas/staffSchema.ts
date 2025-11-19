@@ -8,3 +8,13 @@ export const staffSchema = z.object({
   jobTitle: z.string().min(2, STAFF_ERROR_MESSAGES.JOB_TITLE),
 })
 export type StaffSchemaType = z.infer<typeof staffSchema>
+
+// Schema for editing staff details
+export const StaffDetailsSchema = z.object({
+  status: z.string().min(2, STAFF_ERROR_MESSAGES.STATUS),
+  note: z.preprocess(
+    value => (value === '' ? null : value),
+    z.string().min(5, STAFF_ERROR_MESSAGES.NOTE).nullable()
+  ),
+})
+export type StaffDetailsParams = z.infer<typeof StaffDetailsSchema>

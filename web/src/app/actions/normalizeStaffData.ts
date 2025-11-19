@@ -1,10 +1,4 @@
-interface staffNormalizeData {
-  name: string
-  email: string
-  department: string
-  jobTitle: string
-  createdBy: string
-}
+import type { staffNormalizeData } from '@/app/interface/staffInterfaces'
 
 export function normalizeStaffData({
   name,

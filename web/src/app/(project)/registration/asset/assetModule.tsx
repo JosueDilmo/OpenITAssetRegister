@@ -1,5 +1,6 @@
 'use client'
 import { normalizeAssetData } from '@/app/actions/normalizeAssetData'
+import type { AssetModuleProps } from '@/app/interface/assetInterfaces'
 import { postNewAsset } from '@/http/api'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as Icons from 'lucide-react'
@@ -9,10 +10,6 @@ import { toast } from 'react-toastify'
 import { Button } from '../../../components/button'
 import { InputField, InputIcon, InputRoot } from '../../../components/input'
 import { type AssetSchemaType, assetSchema } from '../../../schemas/assetSchema'
-
-export interface AssetModuleProps {
-  userEmail: string
-}
 
 export function AssetModule({ userEmail }: AssetModuleProps) {
   const router = useRouter()

@@ -15,5 +15,11 @@ export const assetSchema = z.object({
     .min(2, ASSET_ERROR_MESSAGES.ASSET_NUMBER)
     .startsWith('IT-', ASSET_ERROR_MESSAGES.ASSET_NUMBER),
 })
-
 export type AssetSchemaType = z.infer<typeof assetSchema>
+
+// Schema for editing asset details
+export const AssetDetailsSchema = z.object({
+  status: z.string().min(2, ASSET_ERROR_MESSAGES.STATUS),
+  note: z.string().min(10, ASSET_ERROR_MESSAGES.NOTE).optional().nullable(),
+})
+export type AssetDetailsParams = z.infer<typeof AssetDetailsSchema>

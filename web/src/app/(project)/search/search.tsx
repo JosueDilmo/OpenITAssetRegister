@@ -1,38 +1,14 @@
+import type { SearchAssetProps } from '@/app/interface/assetInterfaces'
+import type { AssetList } from '@/app/types/assetTypes'
 import { getAssetBySerial } from '@/http/api'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as Icons from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import { z } from 'zod'
 import { AddAsset } from '../../components/addAsset'
 import { InputField, InputRoot } from '../../components/input'
-
-const SearchSchema = z.object({
-  serialNumber: z.string().min(4, 'Insert valid serial number'),
-})
-
-type SearchSchema = z.infer<typeof SearchSchema>
-
-type AssetList = Array<{
-  id: string
-  serialNumber: string
-  name: string
-  type: string
-  assignedTo: string | null
-  datePurchased: string
-  assetNumber: string
-  status: string
-  note: string | null
-  createdAt: string
-  createdBy: string
-}>
-
-interface SearchAssetProps {
-  email: string
-  userEmail: string
-  userRole: string
-}
+import { SearchSchema } from '../../schemas/searchSchema'
 
 export function Search({ email, userEmail, userRole }: SearchAssetProps) {
   const {

@@ -1,44 +1,23 @@
 'use client'
 import { Search } from '@/app/(project)/search/search'
 import { Button } from '@/app/components/button'
+import type { EditStaffInfoProps } from '@/app/interface/staffInterfaces'
+import {
+  type StaffDetailsParams,
+  StaffDetailsSchema,
+} from '@/app/schemas/staffSchema'
 import { patchStaffDetailsId } from '@/http/api'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import { z } from 'zod'
 import { InputField, InputRoot } from '../../../../components/input'
 import { EditStaffAssetList } from './editStaffAssetList'
 
-interface EditStaffInfoProps {
-  data: Array<{
-    id: string
-    name: string
-    email: string
-    department: string
-    jobTitle: string
-    status: string
-    note: string | null
-    assetHistoryList: string[]
-    createdAt: string
-  }>
-  userEmail: string
-  userRole: string
-}
-
-const StaffSchema = z.object({
-  status: z.string().min(2, 'Insert valid status'),
-  note: z.preprocess(
-    value => (value === '' ? null : value),
-    z.string().min(5, 'Insert a valid annotation').nullable()
-  ),
-})
 /*TODO: Fix the note register/ set value to work properly
   - If note is empty, it is setting to null, but it should be set to as noteRegistered
   - Display ChangeLog for the staff - get changeLog
   */
-
-type StaffSchema = z.infer<typeof StaffSchema>
 
 export function EditStaffInfo({
   data,
@@ -51,8 +30,8 @@ export function EditStaffInfo({
     getValues,
     watch,
     formState: { errors },
-  } = useForm<StaffSchema>({
-    resolver: zodResolver(StaffSchema),
+  } = useForm<StaffDetailsParams>({
+    resolver: zodResolver(StaffDetailsSchema),
   })
 
   // Get the current status value
@@ -80,7 +59,7 @@ export function EditStaffInfo({
   }
 
   // Function to manage staff status and annotation
-  async function manageStaffInfo({ status, note }: StaffSchema) {
+  async function manageStaffInfo({ status, note }: StaffDetailsParams) {
     const normalizedData = {
       status: status.toUpperCase(),
       note: !note || note === '' ? null : note.trim(),

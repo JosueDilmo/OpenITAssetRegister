@@ -1,12 +1,4 @@
-interface assetNormalizeData {
-  serialNumber: string
-  name: string
-  type: string
-  assignedTo: string | null
-  datePurchased: string
-  assetNumber: string
-  createdBy: string
-}
+import type { assetNormalizeData } from '../interface/assetInterfaces'
 
 export function normalizeAssetData({
   serialNumber,
