@@ -3,13 +3,7 @@ import { db } from '../../drizzle/client'
 import { assetTab } from '../../drizzle/schema/assetTab'
 import { staffTab } from '../../drizzle/schema/staffTab'
 import { ERROR_MESSAGES } from '../../errors/errorMessages'
-import {
-  AuthenticationError,
-  AuthorizationError,
-  ConflictError,
-  DatabaseError,
-  NotFoundError,
-} from '../../errors/errorTypes'
+import { DatabaseError, NotFoundError } from '../../errors/errorTypes'
 import type { AssignAssetWithConfirmationParams } from '../../types'
 
 export async function assignAssetToStaffWithConfirmation({
@@ -75,7 +69,24 @@ export async function assignAssetToStaffWithConfirmation({
         .set({ assetHistoryList: updatedAssetHistory })
         .where(eq(staffTab.email, staffEmail))
 
-      // Update changeLog in assetTab
+      // Update Staff changelog
+      const prevStaffChangeLog = Array.isArray(staff[0].changeLog)
+        ? staff[0].changeLog
+        : []
+      const newStaffChangeLog = {
+        updatedBy,
+        updatedAt: new Date(),
+        updatedField: 'assetHistoryList',
+        previousValue: currentAssetHistory,
+        newValue: updatedAssetHistory,
+      }
+      const updatedStaffChangeLog = [...prevStaffChangeLog, newStaffChangeLog]
+      await trx
+        .update(staffTab)
+        .set({ changeLog: updatedStaffChangeLog })
+        .where(eq(staffTab.email, staffEmail))
+
+      // Update Asset changeLog
       const prevChangeLog = Array.isArray(asset[0].changeLog)
         ? asset[0].changeLog
         : []
@@ -97,12 +108,7 @@ export async function assignAssetToStaffWithConfirmation({
       }
     })
   } catch (error) {
-    if (
-      error instanceof NotFoundError ||
-      error instanceof AuthorizationError ||
-      error instanceof ConflictError ||
-      error instanceof AuthenticationError
-    ) {
+    if (error instanceof NotFoundError || error instanceof DatabaseError) {
       throw error
     }
 

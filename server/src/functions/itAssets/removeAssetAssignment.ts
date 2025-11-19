@@ -56,7 +56,9 @@ export async function removeAssetAssignment({
         })
         .where(eq(assetTab.id, assetId))
 
-      // Return success message
+      //Update Staff changelog?
+
+      // Return result
       if (assetRemoved.length === 0) {
         throw new DatabaseError(ERROR_MESSAGES.ASSET_REMOVAL_FAILED)
       }

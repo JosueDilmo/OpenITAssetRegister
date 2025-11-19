@@ -100,7 +100,7 @@ export async function createAsset({
         const newStaffChangeLog = {
           updatedBy: createdBy,
           updatedAt: new Date(),
-          updatedField: 'Asset History List',
+          updatedField: 'assetHistoryList',
           previousValue: JSON.stringify({
             assetHistoryList: staff[0].assetHistoryList,
           }),
@@ -140,7 +140,7 @@ export async function createAsset({
       }
     })
   } catch (error) {
-    if (error instanceof NotFoundError) {
+    if (error instanceof NotFoundError || error instanceof DatabaseError) {
       throw error
     }
 
