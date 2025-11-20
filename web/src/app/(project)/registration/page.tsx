@@ -9,10 +9,9 @@ export default async function RegisterPage() {
   if (!currentUser) {
     throw new Error('User not found')
   }
-
   const userRole = currentUser.role
-
   const currentUserEmail = currentUser?.email
+
   return (
     <div className="flex w-full">
       <Menu />
@@ -21,8 +20,16 @@ export default async function RegisterPage() {
           <ShowAccessDeniedMessage />
         ) : (
           <>
-            <StaffModule userEmail={currentUserEmail || ''} />
-            <AssetModule userEmail={currentUserEmail || ''} />
+            <StaffModule
+              userEmail={currentUserEmail || ''}
+              userRole={userRole}
+              staffEmail=""
+            />
+            <AssetModule
+              userEmail={currentUserEmail || ''}
+              userRole={userRole}
+              staffEmail=""
+            />
           </>
         )}
       </div>

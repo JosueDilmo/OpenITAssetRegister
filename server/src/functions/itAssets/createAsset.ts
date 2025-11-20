@@ -99,7 +99,7 @@ export async function createAsset({
           : []
         const newStaffChangeLog = {
           updatedBy: createdBy,
-          updatedAt: new Date(),
+          updatedAt: new Date().toISOString(),
           updatedField: 'assetHistoryList',
           previousValue: JSON.stringify({
             assetHistoryList: staff[0].assetHistoryList,
@@ -120,7 +120,7 @@ export async function createAsset({
           : []
         const newChangeLog = {
           updatedBy: createdBy,
-          updatedAt: new Date(),
+          updatedAt: new Date().toISOString(),
           updatedField: 'assignedTo',
           previousValue: newAsset[0].assignedTo,
           newValue: assignedTo,

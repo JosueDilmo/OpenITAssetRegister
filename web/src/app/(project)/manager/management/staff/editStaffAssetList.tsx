@@ -1,17 +1,20 @@
 'use client'
 import { BoxField, BoxRoot } from '@/app/components/box'
-import type { AssetProps } from '@/app/interface/assetInterfaces'
-import type { EditStaffAssetListProps } from '@/app/interface/staffInterfaces'
+import type { AssetProps, UserProps } from '@/app/interface/interfaces'
 import { deleteAssetById, getAssetByStaffEmail } from '@/http/api'
 import * as Icons from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
 export function EditStaffAssetList({
-  email,
+  staffEmail,
   userEmail,
   userRole,
-}: EditStaffAssetListProps) {
+}: UserProps) {
+  if (userRole !== 'admin') {
+    return null
+  }
+
   const [getResult, setGetResult] = useState<AssetProps>()
 
   const handleRemoveAsset = async (id: string) => {
@@ -20,6 +23,15 @@ export function EditStaffAssetList({
     const { success, message } = await deleteAssetById(id, { updatedBy })
     if (success) {
       toast[success ? 'success' : 'error'](message)
+    } else {
+      const userConfirmation = window.confirm(message)
+      if (userConfirmation) {
+        const { success, message } = await deleteAssetById(id, {
+          updatedBy,
+          userConfirmed: true,
+        })
+        toast[success ? 'success' : 'error'](message)
+      }
     }
     window.location.reload()
   }
@@ -27,12 +39,12 @@ export function EditStaffAssetList({
   useEffect(() => {
     async function getAllAssetByEmail() {
       const { success, message, assetList } = await getAssetByStaffEmail({
-        email,
+        staffEmail,
       })
       setGetResult({ success, message, assetList })
     }
     getAllAssetByEmail()
-  }, [email])
+  }, [staffEmail])
 
   return (
     <div className="max-w-sm max-h-fit p-6 bg-gray-700 border border-gray-200 rounded-lg">

@@ -2,14 +2,11 @@ import { eq } from 'drizzle-orm'
 import { db } from '../../drizzle/client'
 import { assetTab } from '../../drizzle/schema/assetTab'
 import { ERROR_MESSAGES } from '../../errors/errorMessages'
-import {
-  DatabaseError,
-  NotFoundError,
-  ValidationError,
-} from '../../errors/errorTypes'
+import { DatabaseError, NotFoundError } from '../../errors/errorTypes'
 import type { DeleteAssetParams } from '../../types'
 
 export async function removeAssetAssignment({
+  userConfirmed,
   assetId,
   updatedBy,
 }: DeleteAssetParams) {
@@ -29,10 +26,17 @@ export async function removeAssetAssignment({
       const asset = assetResult[0]
       const prevAssignedTo = asset.assignedTo
 
+      if (!userConfirmed) {
+        return {
+          success: false,
+          message: 'Are you sure you want to remove this asset assignment?',
+        }
+      }
+
       // Unassign the asset (clear assignedTo and dateAssigned)
       const assetRemoved = await trx
         .update(assetTab)
-        .set({ assignedTo: '', dateAssigned: '' })
+        .set({ assignedTo: null, dateAssigned: null })
         .where(eq(assetTab.id, assetId))
         .returning()
 
@@ -42,7 +46,7 @@ export async function removeAssetAssignment({
         : []
       const newChangeLog = {
         updatedBy,
-        updatedAt: new Date(),
+        updatedAt: new Date().toISOString(),
         updatedField: 'assignedTo',
         previousValue: prevAssignedTo,
         newValue:

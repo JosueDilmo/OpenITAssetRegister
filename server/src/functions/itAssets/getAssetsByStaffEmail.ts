@@ -5,12 +5,12 @@ import { ERROR_MESSAGES } from '../../errors/errorMessages'
 import { DatabaseError } from '../../errors/errorTypes'
 import type { GetAssetParams } from '../../types'
 
-export async function getAssetsByStaffEmail({ email }: GetAssetParams) {
+export async function getAssetsByStaffEmail({ staffEmail }: GetAssetParams) {
   try {
     const asset = await db
       .select()
       .from(assetTab)
-      .where(eq(assetTab.assignedTo, email))
+      .where(eq(assetTab.assignedTo, staffEmail))
 
     if (asset.length === 0) {
       return {

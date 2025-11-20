@@ -1,4 +1,4 @@
-import type { SearchAssetProps } from '@/app/interface/assetInterfaces'
+import type { UserProps } from '@/app/interface/interfaces'
 import type { AssetList } from '@/app/types/assetTypes'
 import { getAssetBySerial } from '@/http/api'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -10,7 +10,7 @@ import { AddAsset } from '../../components/addAsset'
 import { InputField, InputRoot } from '../../components/input'
 import { SearchSchema } from '../../schemas/searchSchema'
 
-export function Search({ email, userEmail, userRole }: SearchAssetProps) {
+export function Search({ staffEmail, userEmail, userRole }: UserProps) {
   const {
     handleSubmit,
     setValue,
@@ -68,7 +68,12 @@ export function Search({ email, userEmail, userRole }: SearchAssetProps) {
               </p>
             )}
           </form>
-          <AddAsset email={email} userEmail={userEmail} asset={assetFound} />
+          <AddAsset
+            staffEmail={staffEmail}
+            userEmail={userEmail}
+            userRole={userRole}
+            asset={assetFound}
+          />
         </>
       ) : (
         <div className="text-red-500">

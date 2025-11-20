@@ -88,13 +88,21 @@ export const newAsset: FastifyPluginAsyncZod = async app => {
           assetNumber,
           createdBy,
         })
+
+        if (!result) {
+          throw new DatabaseError(ERROR_MESSAGES.INTERNAL_DB_ERROR)
+        }
+
         return reply.status(201).send({
           success: result.success,
           message: result.message,
           staff: result.staff,
         })
       } catch (error) {
-        if (error instanceof ValidationError) {
+        if (
+          error instanceof ValidationError ||
+          error instanceof DatabaseError
+        ) {
           throw error
         }
         console.log('Error creating new asset:', error)

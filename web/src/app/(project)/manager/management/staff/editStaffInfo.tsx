@@ -1,7 +1,7 @@
 'use client'
 import { Search } from '@/app/(project)/search/search'
 import { Button } from '@/app/components/button'
-import type { EditStaffInfoProps } from '@/app/interface/staffInterfaces'
+import type { StaffInfoProps, UserProps } from '@/app/interface/interfaces'
 import {
   type StaffDetailsParams,
   StaffDetailsSchema,
@@ -23,7 +23,7 @@ export function EditStaffInfo({
   data,
   userEmail,
   userRole,
-}: EditStaffInfoProps) {
+}: StaffInfoProps & UserProps) {
   const {
     handleSubmit,
     setValue,
@@ -169,11 +169,15 @@ export function EditStaffInfo({
         </div>
       ))}
       <EditStaffAssetList
-        email={staffEmail}
+        staffEmail={staffEmail}
         userEmail={userEmail}
         userRole={userRole}
       />
-      <Search email={staffEmail} userEmail={userEmail} userRole={userRole} />
+      <Search
+        staffEmail={staffEmail}
+        userEmail={userEmail}
+        userRole={userRole}
+      />
     </div>
   )
 }

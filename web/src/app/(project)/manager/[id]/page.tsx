@@ -1,12 +1,9 @@
 import { getCurrentITAssetUser } from '@/app/actions/getCurrentITAssetUser'
+import type { PageProps } from '@/app/interface/interfaces'
 import { getAllAssets, getAllStaff } from '@/http/api'
 import { EditAssetInfo } from '../../manager/management/asset/editAssetInfo'
 import { EditStaffInfo } from '../../manager/management/staff/editStaffInfo'
 import { Menu } from '../../nav/menu'
-
-interface PageProps {
-  params: Promise<{ id: string }>
-}
 
 export default async function DisplayPage(props: PageProps) {
   const { id } = await props.params

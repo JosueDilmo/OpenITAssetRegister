@@ -14,6 +14,7 @@ export const assetById: FastifyPluginAsyncZod = async app => {
         }),
         body: z.object({
           updatedBy: z.string().email(ERROR_MESSAGES.MISSING_UPDATED_BY),
+          userConfirmed: z.boolean().optional(),
         }),
         response: {
           200: z.object({
@@ -50,13 +51,18 @@ export const assetById: FastifyPluginAsyncZod = async app => {
     async (request, reply) => {
       try {
         const assetId = request.params.id
-        const { updatedBy } = request.body
+        const updatedBy = request.body.updatedBy
+        const userConfirmed = request.body.userConfirmed || false
 
         if (!assetId) {
           throw new ValidationError(ERROR_MESSAGES.ASSET_ID_REQUIRED)
         }
 
-        const result = await removeAssetAssignment({ assetId, updatedBy })
+        const result = await removeAssetAssignment({
+          assetId,
+          updatedBy,
+          userConfirmed,
+        })
 
         return reply.status(200).send({
           success: result.success,

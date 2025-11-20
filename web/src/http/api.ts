@@ -6,432 +6,438 @@
  */
 export type PostNewAssetBody = {
   /** @minLength 2 */
-  serialNumber: string
+  serialNumber: string;
   /** @minLength 2 */
-  name: string
+  name: string;
   /** @minLength 2 */
-  type: string
+  type: string;
   /** @nullable */
-  assignedTo: string | null
-  datePurchased: string
+  assignedTo: string | null;
+  datePurchased: string;
   /** @minLength 2 */
-  assetNumber: string
-  createdBy: string
-}
+  assetNumber: string;
+  createdBy: string;
+};
 
 export type PostNewAsset201 = {
-  success: boolean
-  message: string
+  success: boolean;
+  message: string;
   /** @nullable */
-  staff: string | null
-}
+  staff: string | null;
+};
 
 export type PostNewAsset400Error = {
-  code: string
-  message: string
-  details?: unknown
-}
+  code: string;
+  message: string;
+  details?: unknown;
+};
 
 export type PostNewAsset400 = {
-  success: boolean
-  error: PostNewAsset400Error
-}
+  success: boolean;
+  error: PostNewAsset400Error;
+};
 
 export type PostNewAsset404Error = {
-  code: string
-  message: string
-  details?: unknown
-}
+  code: string;
+  message: string;
+  details?: unknown;
+};
 
 export type PostNewAsset404 = {
-  success: boolean
-  error: PostNewAsset404Error
-}
+  success: boolean;
+  error: PostNewAsset404Error;
+};
 
 export type PostNewAsset500Error = {
-  code: string
-  message: string
-  details?: unknown
-}
+  code: string;
+  message: string;
+  details?: unknown;
+};
 
 export type PostNewAsset500 = {
-  success: boolean
-  error: PostNewAsset500Error
-}
+  success: boolean;
+  error: PostNewAsset500Error;
+};
 
 export type PostNewStaffBody = {
   /** @minLength 2 */
-  name: string
-  email: string
+  name: string;
+  email: string;
   /** @minLength 2 */
-  department: string
+  department: string;
   /** @minLength 2 */
-  jobTitle: string
-  createdBy: string
-}
+  jobTitle: string;
+  createdBy: string;
+};
 
 export type PostNewStaff201 = {
-  success: boolean
-  message: string
-  staff: string
-}
+  success: boolean;
+  message: string;
+  staff: string;
+};
 
 export type PostNewStaff500 = {
-  success: boolean
-  message: string
+  success: boolean;
+  message: string;
   /** @nullable */
-  staff: string | null
-}
+  staff: string | null;
+};
 
 export type GetAllStaffParams = {
-  id?: string
-}
+id?: string;
+};
 
 export type GetAllStaff200ItemChangeLogItem = {
-  updatedBy: string
-  updatedAt: string
-  updatedField: string
-  previousValue: string
-  newValue: string
-}
+  updatedBy: string;
+  updatedAt: string;
+  updatedField: string;
+  previousValue: string;
+  newValue: string;
+};
 
 export type GetAllStaff200Item = {
-  id: string
-  name: string
-  email: string
-  department: string
-  jobTitle: string
-  status: string
+  id: string;
+  name: string;
+  email: string;
+  department: string;
+  jobTitle: string;
+  status: string;
   /** @nullable */
-  note: string | null
-  assetHistoryList: string[]
-  createdAt: string
-  createdBy: string
-  changeLog: GetAllStaff200ItemChangeLogItem[]
-}
+  note: string | null;
+  assetHistoryList: string[];
+  createdAt: string;
+  createdBy: string;
+  changeLog: GetAllStaff200ItemChangeLogItem[];
+};
 
 export type GetAllStaff500Error = {
-  code: string
-  message: string
-  details?: unknown
-}
+  code: string;
+  message: string;
+  details?: unknown;
+};
 
 export type GetAllStaff500 = {
-  success: boolean
-  error: GetAllStaff500Error
-}
+  success: boolean;
+  error: GetAllStaff500Error;
+};
 
 export type GetAllAssetsParams = {
-  id?: string
-}
+id?: string;
+};
 
 export type GetAllAssets200ItemChangeLogItem = {
-  updatedBy: string
-  updatedAt: string
-  updatedField: string
+  updatedBy: string;
+  updatedAt: string;
+  updatedField: string;
   /** @nullable */
-  previousValue: string | null
+  previousValue: string | null;
   /** @nullable */
-  newValue: string | null
-}
+  newValue: string | null;
+};
 
 export type GetAllAssets200Item = {
-  id: string
-  serialNumber: string
-  name: string
-  type: string
+  id: string;
+  serialNumber: string;
+  name: string;
+  type: string;
   /** @nullable */
-  assignedTo: string | null
+  assignedTo: string | null;
   /** @nullable */
-  dateAssigned: string | null
-  datePurchased: string
-  assetNumber: string
-  status: string
+  dateAssigned: string | null;
+  datePurchased: string;
+  assetNumber: string;
+  status: string;
   /** @nullable */
-  note: string | null
-  createdAt: string
-  createdBy: string
-  changeLog: GetAllAssets200ItemChangeLogItem[]
-}
+  note: string | null;
+  createdAt: string;
+  createdBy: string;
+  changeLog: GetAllAssets200ItemChangeLogItem[];
+};
 
 export type GetAllAssets500Error = {
-  code: string
-  message: string
-  details?: unknown
-}
+  code: string;
+  message: string;
+  details?: unknown;
+};
 
 export type GetAllAssets500 = {
-  success: boolean
-  error: GetAllAssets500Error
-}
+  success: boolean;
+  error: GetAllAssets500Error;
+};
 
 export type DeleteAssetByIdBody = {
-  updatedBy: string
-}
+  updatedBy: string;
+  userConfirmed?: boolean;
+};
 
 export type DeleteAssetById200 = {
-  success: boolean
-  message: string
-}
+  success: boolean;
+  message: string;
+};
 
 export type DeleteAssetById400Error = {
-  code: string
-  message: string
-  details?: unknown
-}
+  code: string;
+  message: string;
+  details?: unknown;
+};
 
 export type DeleteAssetById400 = {
-  success: boolean
-  error: DeleteAssetById400Error
-}
+  success: boolean;
+  error: DeleteAssetById400Error;
+};
 
 export type DeleteAssetById404Error = {
-  code: string
-  message: string
-  details?: unknown
-}
+  code: string;
+  message: string;
+  details?: unknown;
+};
 
 export type DeleteAssetById404 = {
-  success: boolean
-  error: DeleteAssetById404Error
-}
+  success: boolean;
+  error: DeleteAssetById404Error;
+};
 
 export type DeleteAssetById500Error = {
-  code: string
-  message: string
-  details?: unknown
-}
+  code: string;
+  message: string;
+  details?: unknown;
+};
 
 export type DeleteAssetById500 = {
-  success: boolean
-  error: DeleteAssetById500Error
-}
+  success: boolean;
+  error: DeleteAssetById500Error;
+};
 
 export type PostAssetToStaffEmailBody = {
-  assetId: string
-  updatedBy: string
-  userConfirmed?: boolean
-}
+  assetId: string;
+  updatedBy: string;
+  userConfirmed?: boolean;
+};
 
 export type PostAssetToStaffEmail200 = {
-  success: boolean
-  message: string
-}
+  success: boolean;
+  message: string;
+};
 
 export type PostAssetToStaffEmail400Error = {
-  code: string
-  message: string
-  details?: unknown
-}
+  code: string;
+  message: string;
+  details?: unknown;
+};
 
 export type PostAssetToStaffEmail400 = {
-  success: boolean
-  error: PostAssetToStaffEmail400Error
-}
+  success: boolean;
+  error: PostAssetToStaffEmail400Error;
+};
 
 export type PostAssetToStaffEmail404Error = {
-  code: string
-  message: string
-  details?: unknown
-}
+  code: string;
+  message: string;
+  details?: unknown;
+};
 
 export type PostAssetToStaffEmail404 = {
-  success: boolean
-  error: PostAssetToStaffEmail404Error
-}
+  success: boolean;
+  error: PostAssetToStaffEmail404Error;
+};
 
 export type PostAssetToStaffEmail500Error = {
-  code: string
-  message: string
-  details?: unknown
-}
+  code: string;
+  message: string;
+  details?: unknown;
+};
 
 export type PostAssetToStaffEmail500 = {
-  success: boolean
-  error: PostAssetToStaffEmail500Error
-}
+  success: boolean;
+  error: PostAssetToStaffEmail500Error;
+};
 
 export type PatchAssetDetailsIdBody = {
   /** @minLength 2 */
-  status: string
+  status: string;
   /**
    * @minLength 10
    * @nullable
    */
-  note: string | null
-  updatedBy: string
-}
+  note: string | null;
+  updatedBy: string;
+};
 
 export type PatchAssetDetailsId201 = {
-  success: boolean
-  message: string
-}
+  success: boolean;
+  message: string;
+};
 
 export type PatchAssetDetailsId500 = {
-  success: boolean
-  message: string
-}
+  success: boolean;
+  message: string;
+};
 
 export type PatchStaffDetailsIdBody = {
   /** @minLength 1 */
-  status: string
+  status: string;
   /** @nullable */
-  note: string | null
+  note: string | null;
   /** @minLength 1 */
-  updatedBy: string
-}
+  updatedBy: string;
+};
 
 export type PatchStaffDetailsId200 = {
-  success: boolean
-  message: string
-}
+  success: boolean;
+  message: string;
+};
 
 export type PatchStaffDetailsId400Error = {
-  code: string
-  message: string
-  details?: unknown
-}
+  code: string;
+  message: string;
+  details?: unknown;
+};
 
 export type PatchStaffDetailsId400 = {
-  success: boolean
-  error: PatchStaffDetailsId400Error
-}
+  success: boolean;
+  error: PatchStaffDetailsId400Error;
+};
 
 export type PatchStaffDetailsId404Error = {
-  code: string
-  message: string
-  details?: unknown
-}
+  code: string;
+  message: string;
+  details?: unknown;
+};
 
 export type PatchStaffDetailsId404 = {
-  success: boolean
-  error: PatchStaffDetailsId404Error
-}
+  success: boolean;
+  error: PatchStaffDetailsId404Error;
+};
 
 export type PatchStaffDetailsId500Error = {
-  code: string
-  message: string
-  details?: unknown
-}
+  code: string;
+  message: string;
+  details?: unknown;
+};
 
 export type PatchStaffDetailsId500 = {
-  success: boolean
-  error: PatchStaffDetailsId500Error
-}
+  success: boolean;
+  error: PatchStaffDetailsId500Error;
+};
 
 export type GetAssetBySerialParams = {
-  serialNumber: string
-}
+serialNumber: string;
+};
 
 export type GetAssetBySerial200AssetListItem = {
-  id: string
-  serialNumber: string
-  name: string
-  type: string
+  id: string;
+  serialNumber: string;
+  name: string;
+  type: string;
   /** @nullable */
-  assignedTo: string | null
-  datePurchased: string
-  assetNumber: string
-  status: string
+  assignedTo: string | null;
+  datePurchased: string;
+  assetNumber: string;
+  status: string;
   /** @nullable */
-  note: string | null
-  createdAt: string
-  createdBy: string
-}
+  note: string | null;
+  createdAt: string;
+  createdBy: string;
+};
 
 export type GetAssetBySerial200 = {
-  success: boolean
-  message: string
-  assetList: GetAssetBySerial200AssetListItem[]
-}
+  success: boolean;
+  message: string;
+  assetList: GetAssetBySerial200AssetListItem[];
+};
 
 export type GetAssetBySerial400Error = {
-  code: string
-  message: string
-  details?: unknown
-}
+  code: string;
+  message: string;
+  details?: unknown;
+};
 
 export type GetAssetBySerial400 = {
-  success: boolean
-  error: GetAssetBySerial400Error
-}
+  success: boolean;
+  error: GetAssetBySerial400Error;
+};
 
 export type GetAssetBySerial404Error = {
-  code: string
-  message: string
-  details?: unknown
-}
+  code: string;
+  message: string;
+  details?: unknown;
+};
 
 export type GetAssetBySerial404 = {
-  success: boolean
-  error: GetAssetBySerial404Error
-}
+  success: boolean;
+  error: GetAssetBySerial404Error;
+};
 
 export type GetAssetBySerial500Error = {
-  code: string
-  message: string
-  details?: unknown
-}
+  code: string;
+  message: string;
+  details?: unknown;
+};
 
 export type GetAssetBySerial500 = {
-  success: boolean
-  error: GetAssetBySerial500Error
-}
+  success: boolean;
+  error: GetAssetBySerial500Error;
+};
 
 export type GetAssetByStaffEmailParams = {
-  email: string
-}
+staffEmail: string;
+};
 
 export type GetAssetByStaffEmail200AssetListItem = {
-  id: string
-  serialNumber: string
-  name: string
+  id: string;
+  serialNumber: string;
+  name: string;
   /** @nullable */
-  email: string | null
-}
+  email: string | null;
+};
 
 export type GetAssetByStaffEmail200 = {
-  success: boolean
-  message: string
-  assetList: GetAssetByStaffEmail200AssetListItem[]
-}
+  success: boolean;
+  message: string;
+  assetList: GetAssetByStaffEmail200AssetListItem[];
+};
 
 export type GetAssetByStaffEmail400Error = {
-  code: string
-  message: string
-  details?: unknown
-}
+  code: string;
+  message: string;
+  details?: unknown;
+};
 
 export type GetAssetByStaffEmail400 = {
-  success: boolean
-  error: GetAssetByStaffEmail400Error
-}
+  success: boolean;
+  error: GetAssetByStaffEmail400Error;
+};
 
 export type GetAssetByStaffEmail500Error = {
-  code: string
-  message: string
-  details?: unknown
-}
+  code: string;
+  message: string;
+  details?: unknown;
+};
 
 export type GetAssetByStaffEmail500 = {
-  success: boolean
-  error: GetAssetByStaffEmail500Error
-}
+  success: boolean;
+  error: GetAssetByStaffEmail500Error;
+};
 
 export const getPostNewAssetUrl = () => {
+
+
+  
+
   return `http://localhost:3333/newAsset`
 }
 
-export const postNewAsset = async (
-  postNewAssetBody: PostNewAssetBody,
-  options?: RequestInit
-): Promise<PostNewAsset201> => {
-  const res = await fetch(getPostNewAssetUrl(), {
+export const postNewAsset = async (postNewAssetBody: PostNewAssetBody, options?: RequestInit): Promise<PostNewAsset201> => {
+  
+  const res = await fetch(getPostNewAssetUrl(),
+  {      
     ...options,
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(postNewAssetBody),
-  })
+    body: JSON.stringify(
+      postNewAssetBody,)
+  }
+)
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text()
   const data: PostNewAsset201 = body ? JSON.parse(body) : {}
@@ -439,20 +445,27 @@ export const postNewAsset = async (
   return data
 }
 
+
+
 export const getPostNewStaffUrl = () => {
+
+
+  
+
   return `http://localhost:3333/newStaff`
 }
 
-export const postNewStaff = async (
-  postNewStaffBody: PostNewStaffBody,
-  options?: RequestInit
-): Promise<PostNewStaff201> => {
-  const res = await fetch(getPostNewStaffUrl(), {
+export const postNewStaff = async (postNewStaffBody: PostNewStaffBody, options?: RequestInit): Promise<PostNewStaff201> => {
+  
+  const res = await fetch(getPostNewStaffUrl(),
+  {      
     ...options,
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(postNewStaffBody),
-  })
+    body: JSON.stringify(
+      postNewStaffBody,)
+  }
+)
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text()
   const data: PostNewStaff201 = body ? JSON.parse(body) : {}
@@ -460,30 +473,33 @@ export const postNewStaff = async (
   return data
 }
 
-export const getGetAllStaffUrl = (params?: GetAllStaffParams) => {
-  const normalizedParams = new URLSearchParams()
+
+
+export const getGetAllStaffUrl = (params?: GetAllStaffParams,) => {
+  const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
+    
     if (value !== undefined) {
       normalizedParams.append(key, value === null ? 'null' : value.toString())
     }
-  })
+  });
 
-  const stringifiedParams = normalizedParams.toString()
+  const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0
-    ? `http://localhost:3333/allStaff?${stringifiedParams}`
-    : `http://localhost:3333/allStaff`
+  return stringifiedParams.length > 0 ? `http://localhost:3333/allStaff?${stringifiedParams}` : `http://localhost:3333/allStaff`
 }
 
-export const getAllStaff = async (
-  params?: GetAllStaffParams,
-  options?: RequestInit
-): Promise<GetAllStaff200Item[]> => {
-  const res = await fetch(getGetAllStaffUrl(params), {
+export const getAllStaff = async (params?: GetAllStaffParams, options?: RequestInit): Promise<GetAllStaff200Item[]> => {
+  
+  const res = await fetch(getGetAllStaffUrl(params),
+  {      
     ...options,
-    method: 'GET',
-  })
+    method: 'GET'
+    
+    
+  }
+)
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text()
   const data: GetAllStaff200Item[] = body ? JSON.parse(body) : {}
@@ -491,30 +507,33 @@ export const getAllStaff = async (
   return data
 }
 
-export const getGetAllAssetsUrl = (params?: GetAllAssetsParams) => {
-  const normalizedParams = new URLSearchParams()
+
+
+export const getGetAllAssetsUrl = (params?: GetAllAssetsParams,) => {
+  const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
+    
     if (value !== undefined) {
       normalizedParams.append(key, value === null ? 'null' : value.toString())
     }
-  })
+  });
 
-  const stringifiedParams = normalizedParams.toString()
+  const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0
-    ? `http://localhost:3333/allAssets?${stringifiedParams}`
-    : `http://localhost:3333/allAssets`
+  return stringifiedParams.length > 0 ? `http://localhost:3333/allAssets?${stringifiedParams}` : `http://localhost:3333/allAssets`
 }
 
-export const getAllAssets = async (
-  params?: GetAllAssetsParams,
-  options?: RequestInit
-): Promise<GetAllAssets200Item[]> => {
-  const res = await fetch(getGetAllAssetsUrl(params), {
+export const getAllAssets = async (params?: GetAllAssetsParams, options?: RequestInit): Promise<GetAllAssets200Item[]> => {
+  
+  const res = await fetch(getGetAllAssetsUrl(params),
+  {      
     ...options,
-    method: 'GET',
-  })
+    method: 'GET'
+    
+    
+  }
+)
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text()
   const data: GetAllAssets200Item[] = body ? JSON.parse(body) : {}
@@ -522,21 +541,28 @@ export const getAllAssets = async (
   return data
 }
 
-export const getDeleteAssetByIdUrl = (id: string) => {
+
+
+export const getDeleteAssetByIdUrl = (id: string,) => {
+
+
+  
+
   return `http://localhost:3333/assetBy/${id}`
 }
 
-export const deleteAssetById = async (
-  id: string,
-  deleteAssetByIdBody: DeleteAssetByIdBody,
-  options?: RequestInit
-): Promise<DeleteAssetById200> => {
-  const res = await fetch(getDeleteAssetByIdUrl(id), {
+export const deleteAssetById = async (id: string,
+    deleteAssetByIdBody: DeleteAssetByIdBody, options?: RequestInit): Promise<DeleteAssetById200> => {
+  
+  const res = await fetch(getDeleteAssetByIdUrl(id),
+  {      
     ...options,
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(deleteAssetByIdBody),
-  })
+    body: JSON.stringify(
+      deleteAssetByIdBody,)
+  }
+)
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text()
   const data: DeleteAssetById200 = body ? JSON.parse(body) : {}
@@ -544,21 +570,28 @@ export const deleteAssetById = async (
   return data
 }
 
-export const getPostAssetToStaffEmailUrl = (email: string) => {
+
+
+export const getPostAssetToStaffEmailUrl = (email: string,) => {
+
+
+  
+
   return `http://localhost:3333/assetToStaff/${email}`
 }
 
-export const postAssetToStaffEmail = async (
-  email: string,
-  postAssetToStaffEmailBody: PostAssetToStaffEmailBody,
-  options?: RequestInit
-): Promise<PostAssetToStaffEmail200> => {
-  const res = await fetch(getPostAssetToStaffEmailUrl(email), {
+export const postAssetToStaffEmail = async (email: string,
+    postAssetToStaffEmailBody: PostAssetToStaffEmailBody, options?: RequestInit): Promise<PostAssetToStaffEmail200> => {
+  
+  const res = await fetch(getPostAssetToStaffEmailUrl(email),
+  {      
     ...options,
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(postAssetToStaffEmailBody),
-  })
+    body: JSON.stringify(
+      postAssetToStaffEmailBody,)
+  }
+)
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text()
   const data: PostAssetToStaffEmail200 = body ? JSON.parse(body) : {}
@@ -566,21 +599,28 @@ export const postAssetToStaffEmail = async (
   return data
 }
 
-export const getPatchAssetDetailsIdUrl = (id: string) => {
+
+
+export const getPatchAssetDetailsIdUrl = (id: string,) => {
+
+
+  
+
   return `http://localhost:3333/assetDetails/${id}`
 }
 
-export const patchAssetDetailsId = async (
-  id: string,
-  patchAssetDetailsIdBody: PatchAssetDetailsIdBody,
-  options?: RequestInit
-): Promise<PatchAssetDetailsId201> => {
-  const res = await fetch(getPatchAssetDetailsIdUrl(id), {
+export const patchAssetDetailsId = async (id: string,
+    patchAssetDetailsIdBody: PatchAssetDetailsIdBody, options?: RequestInit): Promise<PatchAssetDetailsId201> => {
+  
+  const res = await fetch(getPatchAssetDetailsIdUrl(id),
+  {      
     ...options,
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(patchAssetDetailsIdBody),
-  })
+    body: JSON.stringify(
+      patchAssetDetailsIdBody,)
+  }
+)
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text()
   const data: PatchAssetDetailsId201 = body ? JSON.parse(body) : {}
@@ -588,21 +628,28 @@ export const patchAssetDetailsId = async (
   return data
 }
 
-export const getPatchStaffDetailsIdUrl = (id: string) => {
+
+
+export const getPatchStaffDetailsIdUrl = (id: string,) => {
+
+
+  
+
   return `http://localhost:3333/staffDetails/${id}`
 }
 
-export const patchStaffDetailsId = async (
-  id: string,
-  patchStaffDetailsIdBody: PatchStaffDetailsIdBody,
-  options?: RequestInit
-): Promise<PatchStaffDetailsId200> => {
-  const res = await fetch(getPatchStaffDetailsIdUrl(id), {
+export const patchStaffDetailsId = async (id: string,
+    patchStaffDetailsIdBody: PatchStaffDetailsIdBody, options?: RequestInit): Promise<PatchStaffDetailsId200> => {
+  
+  const res = await fetch(getPatchStaffDetailsIdUrl(id),
+  {      
     ...options,
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(patchStaffDetailsIdBody),
-  })
+    body: JSON.stringify(
+      patchStaffDetailsIdBody,)
+  }
+)
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text()
   const data: PatchStaffDetailsId200 = body ? JSON.parse(body) : {}
@@ -610,30 +657,33 @@ export const patchStaffDetailsId = async (
   return data
 }
 
-export const getGetAssetBySerialUrl = (params: GetAssetBySerialParams) => {
-  const normalizedParams = new URLSearchParams()
+
+
+export const getGetAssetBySerialUrl = (params: GetAssetBySerialParams,) => {
+  const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
+    
     if (value !== undefined) {
       normalizedParams.append(key, value === null ? 'null' : value.toString())
     }
-  })
+  });
 
-  const stringifiedParams = normalizedParams.toString()
+  const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0
-    ? `http://localhost:3333/assetBySerial?${stringifiedParams}`
-    : `http://localhost:3333/assetBySerial`
+  return stringifiedParams.length > 0 ? `http://localhost:3333/assetBySerial?${stringifiedParams}` : `http://localhost:3333/assetBySerial`
 }
 
-export const getAssetBySerial = async (
-  params: GetAssetBySerialParams,
-  options?: RequestInit
-): Promise<GetAssetBySerial200> => {
-  const res = await fetch(getGetAssetBySerialUrl(params), {
+export const getAssetBySerial = async (params: GetAssetBySerialParams, options?: RequestInit): Promise<GetAssetBySerial200> => {
+  
+  const res = await fetch(getGetAssetBySerialUrl(params),
+  {      
     ...options,
-    method: 'GET',
-  })
+    method: 'GET'
+    
+    
+  }
+)
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text()
   const data: GetAssetBySerial200 = body ? JSON.parse(body) : {}
@@ -641,32 +691,33 @@ export const getAssetBySerial = async (
   return data
 }
 
-export const getGetAssetByStaffEmailUrl = (
-  params: GetAssetByStaffEmailParams
-) => {
-  const normalizedParams = new URLSearchParams()
+
+
+export const getGetAssetByStaffEmailUrl = (params: GetAssetByStaffEmailParams,) => {
+  const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
+    
     if (value !== undefined) {
       normalizedParams.append(key, value === null ? 'null' : value.toString())
     }
-  })
+  });
 
-  const stringifiedParams = normalizedParams.toString()
+  const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0
-    ? `http://localhost:3333/assetByStaffEmail?${stringifiedParams}`
-    : `http://localhost:3333/assetByStaffEmail`
+  return stringifiedParams.length > 0 ? `http://localhost:3333/assetByStaffEmail?${stringifiedParams}` : `http://localhost:3333/assetByStaffEmail`
 }
 
-export const getAssetByStaffEmail = async (
-  params: GetAssetByStaffEmailParams,
-  options?: RequestInit
-): Promise<GetAssetByStaffEmail200> => {
-  const res = await fetch(getGetAssetByStaffEmailUrl(params), {
+export const getAssetByStaffEmail = async (params: GetAssetByStaffEmailParams, options?: RequestInit): Promise<GetAssetByStaffEmail200> => {
+  
+  const res = await fetch(getGetAssetByStaffEmailUrl(params),
+  {      
     ...options,
-    method: 'GET',
-  })
+    method: 'GET'
+    
+    
+  }
+)
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text()
   const data: GetAssetByStaffEmail200 = body ? JSON.parse(body) : {}

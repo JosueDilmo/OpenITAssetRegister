@@ -1,4 +1,4 @@
-import type { assetNormalizeData } from '../interface/assetInterfaces'
+import type { assetNormalizeData } from '../interface/interfaces'
 
 export function normalizeAssetData({
   serialNumber,

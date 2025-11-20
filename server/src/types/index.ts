@@ -19,12 +19,13 @@ export interface GetAssetSerialParams {
 }
 
 export interface GetAssetParams {
-  email: string
+  staffEmail: string
 }
 
 export interface DeleteAssetParams {
   assetId: string
   updatedBy: string
+  userConfirmed?: boolean
 }
 
 export interface PatchDetailsParams {

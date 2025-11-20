@@ -10,7 +10,7 @@ export const assetsByStaffEmail: FastifyPluginAsyncZod = async app => {
     {
       schema: {
         querystring: z.object({
-          email: z.string().email(ERROR_MESSAGES.INVALID_EMAIL),
+          staffEmail: z.string().email(ERROR_MESSAGES.INVALID_EMAIL),
         }),
         response: {
           200: z.object({
@@ -47,11 +47,11 @@ export const assetsByStaffEmail: FastifyPluginAsyncZod = async app => {
     async (request, reply) => {
       // Validate query parameters
       try {
-        const { email } = request.query
-        if (!email.trim()) {
+        const { staffEmail } = request.query
+        if (!staffEmail.trim()) {
           throw new ValidationError(ERROR_MESSAGES.STAFF_EMAIL_REQUIRED)
         }
-        const result = await getAssetsByStaffEmail({ email })
+        const result = await getAssetsByStaffEmail({ staffEmail })
         return reply.status(200).send({
           success: result.success,
           message: result.message,

@@ -36,7 +36,7 @@ export async function updateAssetDetails({
         : []
       const newChangeLog = {
         updatedBy,
-        updatedAt: new Date(),
+        updatedAt: new Date().toISOString(),
         updatedField: 'status and note',
         previousValue: JSON.stringify({
           status: asset[0].status,

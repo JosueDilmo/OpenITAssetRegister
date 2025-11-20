@@ -1,6 +1,6 @@
 'use client'
 import { normalizeStaffData } from '@/app/actions/normalizeStaffData'
-import type { StaffModuleProps } from '@/app/interface/staffInterfaces'
+import type { UserProps } from '@/app/interface/interfaces'
 import { postNewStaff } from '@/http/api'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as Icons from 'lucide-react'
@@ -11,7 +11,7 @@ import { Button } from '../../../components/button'
 import { InputField, InputIcon, InputRoot } from '../../../components/input'
 import { type StaffSchemaType, staffSchema } from '../../../schemas/staffSchema'
 
-export function StaffModule({ userEmail }: StaffModuleProps) {
+export function StaffModule({ userEmail, userRole, staffEmail }: UserProps) {
   const router = useRouter()
 
   const {

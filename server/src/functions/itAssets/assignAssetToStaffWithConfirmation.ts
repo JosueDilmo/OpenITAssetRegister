@@ -75,7 +75,7 @@ export async function assignAssetToStaffWithConfirmation({
         : []
       const newStaffChangeLog = {
         updatedBy,
-        updatedAt: new Date(),
+        updatedAt: new Date().toISOString(),
         updatedField: 'assetHistoryList',
         previousValue: currentAssetHistory,
         newValue: updatedAssetHistory,
@@ -92,7 +92,7 @@ export async function assignAssetToStaffWithConfirmation({
         : []
       const newChangeLog = {
         updatedBy,
-        updatedAt: new Date(),
+        updatedAt: new Date().toISOString(),
         updatedField: 'assignedTo',
         previousValue: asset[0].assignedTo,
         newValue: staffEmail,

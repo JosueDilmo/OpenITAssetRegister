@@ -1,6 +1,6 @@
 'use client'
 import { normalizeAssetData } from '@/app/actions/normalizeAssetData'
-import type { AssetModuleProps } from '@/app/interface/assetInterfaces'
+import type { UserProps } from '@/app/interface/interfaces'
 import { postNewAsset } from '@/http/api'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as Icons from 'lucide-react'
@@ -11,7 +11,7 @@ import { Button } from '../../../components/button'
 import { InputField, InputIcon, InputRoot } from '../../../components/input'
 import { type AssetSchemaType, assetSchema } from '../../../schemas/assetSchema'
 
-export function AssetModule({ userEmail }: AssetModuleProps) {
+export function AssetModule({ userEmail, userRole, staffEmail }: UserProps) {
   const router = useRouter()
 
   const {

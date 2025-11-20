@@ -1,5 +1,5 @@
 'use client'
-import type { EditAssetInfoProps } from '@/app/interface/assetInterfaces'
+import type { AssetInfoProps, UserProps } from '@/app/interface/interfaces'
 import {
   type AssetDetailsParams,
   AssetDetailsSchema,
@@ -16,7 +16,7 @@ export function EditAssetInfo({
   data,
   userEmail,
   userRole,
-}: EditAssetInfoProps) {
+}: AssetInfoProps & UserProps) {
   const {
     handleSubmit,
     setValue,

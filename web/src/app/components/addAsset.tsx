@@ -1,31 +1,21 @@
 import { postAssetToStaffEmail } from '@/http/api'
 import * as Icons from 'lucide-react'
 import { toast } from 'react-toastify'
+import type { UserProps } from '../interface/interfaces'
+import type { AssetList } from '../types/assetTypes'
 import { BoxField, BoxRoot } from './box'
 
-type AssetList = Array<{
-  id: string
-  serialNumber: string
-  name: string
-  type: string
-  assignedTo: string | null
-  datePurchased: string
-  assetNumber: string
-  status: string
-  note: string | null
-  createdAt: string
-  createdBy: string
-}>
-
-interface SearchAssetProps {
-  email: string
-  userEmail: string
-  asset: AssetList
-}
-
-export function AddAsset({ email, userEmail, asset }: SearchAssetProps) {
+export function AddAsset({
+  staffEmail,
+  userEmail,
+  userRole,
+  asset,
+}: UserProps & { asset: AssetList }) {
+  if (userRole !== 'admin') {
+    return null
+  }
   async function handleAddAsset(id: string) {
-    const { success, message } = await postAssetToStaffEmail(email, {
+    const { success, message } = await postAssetToStaffEmail(staffEmail, {
       assetId: id,
       updatedBy: userEmail,
     })
@@ -35,7 +25,7 @@ export function AddAsset({ email, userEmail, asset }: SearchAssetProps) {
     } else {
       const confirmRetry = window.confirm(message)
       if (confirmRetry) {
-        const { success, message } = await postAssetToStaffEmail(email, {
+        const { success, message } = await postAssetToStaffEmail(staffEmail, {
           assetId: id,
           updatedBy: userEmail,
           userConfirmed: true,

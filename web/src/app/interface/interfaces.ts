@@ -1,4 +1,8 @@
-export interface EditAssetInfoProps {
+export interface PageProps {
+  params: Promise<{ id: string }>
+}
+
+export interface AssetInfoProps {
   data: Array<{
     id: string
     serialNumber: string
@@ -12,8 +16,20 @@ export interface EditAssetInfoProps {
     status: string
     note: string | null
   }>
-  userEmail: string
-  userRole: string
+}
+
+export interface StaffInfoProps {
+  data: Array<{
+    id: string
+    name: string
+    email: string
+    department: string
+    jobTitle: string
+    status: string
+    note: string | null
+    assetHistoryList: string[]
+    createdAt: string
+  }>
 }
 
 export interface AssetProps {
@@ -27,12 +43,8 @@ export interface AssetProps {
   }[]
 }
 
-export interface AssetModuleProps {
-  userEmail: string
-}
-
-export interface SearchAssetProps {
-  email: string
+export interface UserProps {
+  staffEmail: string
   userEmail: string
   userRole: string
 }
@@ -44,5 +56,13 @@ export interface assetNormalizeData {
   assignedTo: string | null
   datePurchased: string
   assetNumber: string
+  createdBy: string
+}
+
+export interface staffNormalizeData {
+  name: string
+  email: string
+  department: string
+  jobTitle: string
   createdBy: string
 }

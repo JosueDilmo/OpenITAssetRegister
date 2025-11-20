@@ -35,7 +35,7 @@ export async function updateStaffDetails({
         : []
       const newChangeLog = {
         updatedBy,
-        updatedAt: new Date(),
+        updatedAt: new Date().toISOString(),
         updatedField: 'status and note',
         previousValue: JSON.stringify({
           status: staff[0].status,
