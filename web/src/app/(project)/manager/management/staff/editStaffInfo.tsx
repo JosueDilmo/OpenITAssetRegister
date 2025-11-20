@@ -1,7 +1,7 @@
 'use client'
 import { Search } from '@/app/(project)/search/search'
 import { Button } from '@/app/components/button'
-import type { StaffInfoProps, UserProps } from '@/app/interface/interfaces'
+import type { StaffInfoProps, UserProps } from '@/app/interface/index'
 import {
   type StaffDetailsParams,
   StaffDetailsSchema,

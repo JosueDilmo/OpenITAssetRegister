@@ -1,4 +1,4 @@
-import type { staffNormalizeData } from '@/app/interface/interfaces'
+import type { staffNormalizeData } from '@/app/interface/index'
 
 export function normalizeStaffData({
   name,

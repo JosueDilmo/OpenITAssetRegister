@@ -1,6 +1,6 @@
 'use client'
 import { normalizeStaffData } from '@/app/actions/normalizeStaffData'
-import type { UserProps } from '@/app/interface/interfaces'
+import type { UserProps } from '@/app/interface/index'
 import { postNewStaff } from '@/http/api'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as Icons from 'lucide-react'

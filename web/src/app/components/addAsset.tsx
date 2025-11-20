@@ -2,7 +2,7 @@ import { postAssetToStaffEmail } from '@/http/api'
 import * as Icons from 'lucide-react'
 import { toast } from 'react-toastify'
 import type { UserProps } from '../interface/interfaces'
-import type { AssetList } from '../types/assetTypes'
+import type { AssetList } from '../types/index'
 import { BoxField, BoxRoot } from './box'
 
 export function AddAsset({

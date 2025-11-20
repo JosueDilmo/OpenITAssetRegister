@@ -1,6 +1,6 @@
 'use client'
 import { normalizeAssetData } from '@/app/actions/normalizeAssetData'
-import type { UserProps } from '@/app/interface/interfaces'
+import type { UserProps } from '@/app/interface/index'
 import { postNewAsset } from '@/http/api'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as Icons from 'lucide-react'

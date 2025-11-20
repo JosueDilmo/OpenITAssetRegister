@@ -1,5 +1,5 @@
-import type { UserProps } from '@/app/interface/interfaces'
-import type { AssetList } from '@/app/types/assetTypes'
+import type { UserProps } from '@/app/interface/index'
+import type { AssetList } from '@/app/types/index'
 import { getAssetBySerial } from '@/http/api'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as Icons from 'lucide-react'

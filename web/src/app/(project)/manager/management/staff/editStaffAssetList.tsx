@@ -1,6 +1,6 @@
 'use client'
 import { BoxField, BoxRoot } from '@/app/components/box'
-import type { AssetProps, UserProps } from '@/app/interface/interfaces'
+import type { AssetProps, UserProps } from '@/app/interface/index'
 import { deleteAssetById, getAssetByStaffEmail } from '@/http/api'
 import * as Icons from 'lucide-react'
 import { useEffect, useState } from 'react'

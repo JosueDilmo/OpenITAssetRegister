@@ -1,5 +1,5 @@
 'use client'
-import type { AssetInfoProps, UserProps } from '@/app/interface/interfaces'
+import type { AssetInfoProps, UserProps } from '@/app/interface/index'
 import {
   type AssetDetailsParams,
   AssetDetailsSchema,
