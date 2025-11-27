@@ -88,16 +88,12 @@ As the only employee in the IT department, I found that our company did not have
      ```
    - Copy the `.next/`, `public/`, Orval-generated files, and all config files to the server’s web folder.
 
-2. **Build and Start the Backend**
+2. **Build the Backend**
    - On your dev machine:
      ```
      npm run build
      ```
    - Copy the updated files to the server’s backend folder.
-   - On the server, run:
-     ```
-     npm run start
-     ```
 
 3. **Configure IIS**
    - Set up a site with the physical path pointing to your web folder.
@@ -112,19 +108,20 @@ As the only employee in the IT department, I found that our company did not have
    - Allow inbound traffic on ports 80, 443, and 3333.
 
 6. **Install and Trust Certificate**
+   > **May not be necessary, do step 8. and try step 9. before**
    - Export the self-signed certificate and install it in the “Trusted Root Certification Authorities” store on all client machines.
 
-7. **Start the Next.js App**
+8. **Start the Next.js App**
    - On the server, run:
      ```
      npm run start
      ```
-     or
+   - On the web, run
      ```
-     node .next/standalone/server.js
+     npm run start
      ```
 
-8. **Test Access**
+9. **Test Access**
    - From a client, visit `https://itassetregister.company.local` and sign in with Microsoft Entra ID.
 
 ---
@@ -132,7 +129,7 @@ As the only employee in the IT department, I found that our company did not have
 **Notes:**
 - For API client generation (Orval), run it on the server or use a local OpenAPI file if remote fetch fails.
 - Update `.env` and `.env.local` files to match your server’s configuration.
-- Restart IIS after copying new files or changing bindings.
+- Redo IIS after copying new files or changing bindings.
 
 
 ## Contributing
