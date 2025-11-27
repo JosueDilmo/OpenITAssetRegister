@@ -46,7 +46,7 @@ As the only employee in the IT department, I found that our company did not have
 - **Backend**: Node.js (TypeScript), Fastify, Drizzle ORM, custom route handlers, OpenAPI (with Orval for API client generation).
 - **Frontend**: Next.js (React), TypeScript, Tailwind CSS, React Hook Form, Zod for validation.
 - **Authentication**: next-auth with Microsoft Entra ID provider.
-- **Database**: PostgresSQL, accessed via Drizzle ORM, ensuring type safety and maintainability.
+- **Database**: PostgreSQL, accessed via Drizzle ORM, ensuring type safety and maintainability.
 - **API**: OpenAPI-based, providing a clear contract between frontend and backend.
 
 ---
