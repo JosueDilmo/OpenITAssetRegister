@@ -20,7 +20,10 @@ export function EditStaffAssetList({
   const handleRemoveAsset = async (id: string) => {
     console.log('assetId', id)
     const updatedBy = userEmail
-    const { success, message } = await deleteAssetById(id, { updatedBy })
+    const { success, message } = await deleteAssetById(id, {
+      updatedBy,
+      userConfirmed: false,
+    })
     if (success) {
       toast[success ? 'success' : 'error'](message)
     } else {

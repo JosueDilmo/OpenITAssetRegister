@@ -62,6 +62,6 @@ app.register(assetBySerial) // get route to fetch an asset by serial number
 app.register(assetsByStaffEmail) // get route to fetch assets assigned to a staff by email
 
 // Start the server
-app.listen({ port: env.PORT }).then(() => {
-  console.log('HTTP SERVER RUNNING!')
+app.listen({ port: env.PORT, host: '0.0.0.0' }).then(() => {
+  console.log('HTTP SERVER RUNNING, ON PORT', env.PORT)
 })

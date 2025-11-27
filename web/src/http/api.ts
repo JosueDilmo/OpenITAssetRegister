@@ -165,9 +165,9 @@ export type GetAllAssets500 = {
   error: GetAllAssets500Error;
 };
 
-export type DeleteAssetByIdBody = {
-  updatedBy: string;
-  userConfirmed?: boolean;
+export type DeleteAssetByIdParams = {
+updatedBy: string;
+userConfirmed?: boolean;
 };
 
 export type DeleteAssetById200 = {
@@ -424,7 +424,7 @@ export const getPostNewAssetUrl = () => {
 
   
 
-  return `http://localhost:3333/newAsset`
+  return `http://itassetregister.MASTERTECH.local:3333/newAsset`
 }
 
 export const postNewAsset = async (postNewAssetBody: PostNewAssetBody, options?: RequestInit): Promise<PostNewAsset201> => {
@@ -452,7 +452,7 @@ export const getPostNewStaffUrl = () => {
 
   
 
-  return `http://localhost:3333/newStaff`
+  return `http://itassetregister.MASTERTECH.local:3333/newStaff`
 }
 
 export const postNewStaff = async (postNewStaffBody: PostNewStaffBody, options?: RequestInit): Promise<PostNewStaff201> => {
@@ -487,7 +487,7 @@ export const getGetAllStaffUrl = (params?: GetAllStaffParams,) => {
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `http://localhost:3333/allStaff?${stringifiedParams}` : `http://localhost:3333/allStaff`
+  return stringifiedParams.length > 0 ? `http://itassetregister.MASTERTECH.local:3333/allStaff?${stringifiedParams}` : `http://itassetregister.MASTERTECH.local:3333/allStaff`
 }
 
 export const getAllStaff = async (params?: GetAllStaffParams, options?: RequestInit): Promise<GetAllStaff200Item[]> => {
@@ -521,7 +521,7 @@ export const getGetAllAssetsUrl = (params?: GetAllAssetsParams,) => {
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `http://localhost:3333/allAssets?${stringifiedParams}` : `http://localhost:3333/allAssets`
+  return stringifiedParams.length > 0 ? `http://itassetregister.MASTERTECH.local:3333/allAssets?${stringifiedParams}` : `http://itassetregister.MASTERTECH.local:3333/allAssets`
 }
 
 export const getAllAssets = async (params?: GetAllAssetsParams, options?: RequestInit): Promise<GetAllAssets200Item[]> => {
@@ -543,24 +543,31 @@ export const getAllAssets = async (params?: GetAllAssetsParams, options?: Reques
 
 
 
-export const getDeleteAssetByIdUrl = (id: string,) => {
+export const getDeleteAssetByIdUrl = (id: string,
+    params: DeleteAssetByIdParams,) => {
+  const normalizedParams = new URLSearchParams();
 
+  Object.entries(params || {}).forEach(([key, value]) => {
+    
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
 
-  
+  const stringifiedParams = normalizedParams.toString();
 
-  return `http://localhost:3333/assetBy/${id}`
+  return stringifiedParams.length > 0 ? `http://itassetregister.MASTERTECH.local:3333/assetBy/${id}?${stringifiedParams}` : `http://itassetregister.MASTERTECH.local:3333/assetBy/${id}`
 }
 
 export const deleteAssetById = async (id: string,
-    deleteAssetByIdBody: DeleteAssetByIdBody, options?: RequestInit): Promise<DeleteAssetById200> => {
+    params: DeleteAssetByIdParams, options?: RequestInit): Promise<DeleteAssetById200> => {
   
-  const res = await fetch(getDeleteAssetByIdUrl(id),
+  const res = await fetch(getDeleteAssetByIdUrl(id,params),
   {      
     ...options,
-    method: 'DELETE',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      deleteAssetByIdBody,)
+    method: 'DELETE'
+    
+    
   }
 )
 
@@ -577,7 +584,7 @@ export const getPostAssetToStaffEmailUrl = (email: string,) => {
 
   
 
-  return `http://localhost:3333/assetToStaff/${email}`
+  return `http://itassetregister.MASTERTECH.local:3333/assetToStaff/${email}`
 }
 
 export const postAssetToStaffEmail = async (email: string,
@@ -606,7 +613,7 @@ export const getPatchAssetDetailsIdUrl = (id: string,) => {
 
   
 
-  return `http://localhost:3333/assetDetails/${id}`
+  return `http://itassetregister.MASTERTECH.local:3333/assetDetails/${id}`
 }
 
 export const patchAssetDetailsId = async (id: string,
@@ -635,7 +642,7 @@ export const getPatchStaffDetailsIdUrl = (id: string,) => {
 
   
 
-  return `http://localhost:3333/staffDetails/${id}`
+  return `http://itassetregister.MASTERTECH.local:3333/staffDetails/${id}`
 }
 
 export const patchStaffDetailsId = async (id: string,
@@ -671,7 +678,7 @@ export const getGetAssetBySerialUrl = (params: GetAssetBySerialParams,) => {
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `http://localhost:3333/assetBySerial?${stringifiedParams}` : `http://localhost:3333/assetBySerial`
+  return stringifiedParams.length > 0 ? `http://itassetregister.MASTERTECH.local:3333/assetBySerial?${stringifiedParams}` : `http://itassetregister.MASTERTECH.local:3333/assetBySerial`
 }
 
 export const getAssetBySerial = async (params: GetAssetBySerialParams, options?: RequestInit): Promise<GetAssetBySerial200> => {
@@ -705,7 +712,7 @@ export const getGetAssetByStaffEmailUrl = (params: GetAssetByStaffEmailParams,) 
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `http://localhost:3333/assetByStaffEmail?${stringifiedParams}` : `http://localhost:3333/assetByStaffEmail`
+  return stringifiedParams.length > 0 ? `http://itassetregister.MASTERTECH.local:3333/assetByStaffEmail?${stringifiedParams}` : `http://itassetregister.MASTERTECH.local:3333/assetByStaffEmail`
 }
 
 export const getAssetByStaffEmail = async (params: GetAssetByStaffEmailParams, options?: RequestInit): Promise<GetAssetByStaffEmail200> => {
