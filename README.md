@@ -69,76 +69,71 @@ As the only employee in the IT department, I found that our company did not have
 
 > **Project is currently under active development.**
 
-*** Begin Patch
-*** Update File: c:\Mastertech\Projects\ITAssetRegister\README.md
-@@
- ## Getting Started
--> **Project is currently under active development. Setup and usage instructions will be provided soon.**
-+## Deployment Guide (Internal Server)
-+
-+### Prerequisites
-+
-+- **Windows Server** (IIS installed, Application Request Routing & URL Rewrite modules)
-+- **Node.js** (LTS version)
-+- **PostgreSQL** (installed locally or on a dedicated server)
-+- **Internal DNS** entry for your app (e.g., `itassetregister.company.local`)
-+- **Firewall** rules allowing ports 80 (HTTP), 443 (HTTPS), and 3333 (API)
-+
-+### Steps
-+
-+1. **Build the Frontend**
-+   - On your dev machine:
-+     ```
-+     npm run build
-+     ```
-+   - Copy the `.next/`, `public/`, Orval-generated files, and all config files to the server’s web folder.
-+
-+2. **Build and Start the Backend**
-+   - On your dev machine:
-+     ```
-+     npm run build
-+     ```
-+   - Copy the updated files to the server’s backend folder.
-+   - On the server, run:
-+     ```
-+     npm run start
-+     ```
-+
-+3. **Configure IIS**
-+   - Set up a site with the physical path pointing to your web folder.
-+   - Add HTTP (80) and HTTPS (443) bindings for your internal DNS name.
-+   - Assign a self-signed certificate (created for your DNS name) to the HTTPS binding.
-+   - Enable ARR and URL Rewrite to proxy all requests to your Next.js app (e.g., `http://localhost:3000/{R:0}`).
-+
-+4. **Configure Internal DNS**
-+   - Add an A record for `itassetregister.company.local` pointing to your server’s IP.
-+
-+5. **Configure Firewall**
-+   - Allow inbound traffic on ports 80, 443, and 3333.
-+
-+6. **Install and Trust Certificate**
-+   - Export the self-signed certificate and install it in the “Trusted Root Certification Authorities” store on all client machines.
-+
-+7. **Start the Next.js App**
-+   - On the server, run:
-+     ```
-+     npm run start
-+     ```
-+     or
-+     ```
-+     node .next/standalone/server.js
-+     ```
-+
-+8. **Test Access**
-+   - From a client, visit `https://itassetregister.company.local` and sign in with Microsoft Entra ID.
-+
-+---
-+
-+**Notes:**
-+- For API client generation (Orval), run it on the server or use a local OpenAPI file if remote fetch fails.
-+- Update `.env` and `.env.local` files to match your server’s configuration.
-+- Restart IIS after copying new files or changing bindings.
-*** End Patch
+## Deployment Guide (Internal Server)
+
+### Prerequisites
+
+- **Windows Server** (IIS installed, Application Request Routing & URL Rewrite modules)
+- **Node.js** (LTS version)
+- **PostgreSQL** (installed locally or on a dedicated server)
+- **Internal DNS** entry for your app (e.g., `itassetregister.company.local`)
+- **Firewall** rules allowing ports 80 (HTTP), 443 (HTTPS), and 3333 (API)
+
+### Steps
+
+1. **Build the Frontend**
+   - On your dev machine:
+     ```
+     npm run build
+     ```
+   - Copy the `.next/`, `public/`, Orval-generated files, and all config files to the server’s web folder.
+
+2. **Build and Start the Backend**
+   - On your dev machine:
+     ```
+     npm run build
+     ```
+   - Copy the updated files to the server’s backend folder.
+   - On the server, run:
+     ```
+     npm run start
+     ```
+
+3. **Configure IIS**
+   - Set up a site with the physical path pointing to your web folder.
+   - Add HTTP (80) and HTTPS (443) bindings for your internal DNS name.
+   - Assign a self-signed certificate (created for your DNS name) to the HTTPS binding.
+   - Enable ARR and URL Rewrite to proxy all requests to your Next.js app (e.g., `http://localhost:3000/{R:0}`).
+
+4. **Configure Internal DNS**
+   - Add an A record for `itassetregister.company.local` pointing to your server’s IP.
+
+5. **Configure Firewall**
+   - Allow inbound traffic on ports 80, 443, and 3333.
+
+6. **Install and Trust Certificate**
+   - Export the self-signed certificate and install it in the “Trusted Root Certification Authorities” store on all client machines.
+
+7. **Start the Next.js App**
+   - On the server, run:
+     ```
+     npm run start
+     ```
+     or
+     ```
+     node .next/standalone/server.js
+     ```
+
+8. **Test Access**
+   - From a client, visit `https://itassetregister.company.local` and sign in with Microsoft Entra ID.
+
+---
+
+**Notes:**
+- For API client generation (Orval), run it on the server or use a local OpenAPI file if remote fetch fails.
+- Update `.env` and `.env.local` files to match your server’s configuration.
+- Restart IIS after copying new files or changing bindings.
+
 
 ## Contributing
 
